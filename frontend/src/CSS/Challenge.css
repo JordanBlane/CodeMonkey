@@ -1,0 +1,46 @@
+.challengePageWrapper{
+    margin-top:0;
+    height:100vh;
+    width:100vw;
+    background-color: white;
+}
+
+.challengediv{
+    margin-top:0;
+    width:100%;
+    height:95%;
+    position: relative;
+    background-color: beige;
+}
+
+#challengename{
+    margin-top:1%;
+    position: absolute;
+    font-size: 200%;
+    margin-left:10%;
+}
+
+#challengedescription{
+    margin-top:3%;
+    position: absolute;
+    font-size: 150%;
+    margin-left:10%;
+}
+
+#challengeinput{
+    width:60%;
+    height:40%;
+    position: absolute;
+    background-color:green;
+    bottom:10%;
+    left:10%;
+    font-size:100%;
+}
+
+#consoleview{
+    position: absolute;
+    right:0;
+    height:100%;
+    width:20%;
+    background-color:black;
+}
