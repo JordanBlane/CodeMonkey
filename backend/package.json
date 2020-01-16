@@ -6,9 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "nodemonConfig":{
+    "ignore": ["codes/*"]
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "code-compiler": "0.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mysql": "^2.17.1",

@@ -31,10 +31,14 @@
     width:60%;
     height:40%;
     position: absolute;
-    background-color:green;
+    background-color:white;
     bottom:10%;
     left:10%;
-    font-size:100%;
+    font-size:150%;
+    resize: none;   
+    color:black;
+    border:none;
+    overflow-y: scroll;
 }
 
 #consoleview{
@@ -43,4 +47,48 @@
     height:100%;
     width:20%;
     background-color:black;
+    color:white;
+    overflow-y: scroll;
+}
+
+#executebutton{
+    border:none;
+    position: absolute;
+    width:5%;
+    height:40%;
+    bottom:10.3%;
+    right:24.7%;
+    background-color: black;
+    color:white;
+}
+
+#backbutton{
+    position: absolute;
+    top:1.5%;
+    left:1%;
+}
+
+.completediv{
+    position: absolute;
+    width:75%;
+    height:75%;
+    background-color:pink;
+    top:17%;
+    left:10%;
+    display:none;
+}
+
+#completetitle{
+    color:white;
+    font-size:250%;
+    position: relative;
+    left:40%;
+
+}
+
+#completedescription{
+    position: relative;
+    color:grey;
+    font-size:100%;
+    left:42.5%;
 }

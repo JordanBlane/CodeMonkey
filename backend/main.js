@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
-const safeEval = require('safe-eval');
+const { runNode, runC, runCPP, runPython} = require('code-compiler');
+
 
 const app = express();
 
@@ -144,12 +145,91 @@ app.get('/api/addquestion',(req,res)=>{
 })
 
 
-//----- RUN CODE ------
+// ------- RUN NODE CODE --------
 
-app.get('/api/runcode',(req,res)=>{
-    const { code } = req.query;
-    return res.send(eval('2+2'));
+app.get('/api/runnode',(req,res)=>{
+    var { code, solution } = req.query;
+
+    console.log(code)
+
+    code = code.replace('℗℗','++');
+    code = code.replace('℗','+');
+
+    solution = solution.replace(/℗/g, '\n')
+
+    console.log(code)
+    console.log(solution)
+    
+    runNode(code,'',cb = (err,result) => {
+        if(result.substring(0,result.lastIndexOf("\n")) == solution){
+            console.log('right')
+            console.log(result.substring(0,result.lastIndexOf("\n")))
+            return res.json({ data :  result.substring(0,result.lastIndexOf("\n"))+'  >> correct', status : 'true'})
+        }else{
+            console.log('wrong')
+            console.log(result.substring(0,result.lastIndexOf("\n")))
+            return res.json({ data :  result.substring(0,result.lastIndexOf("\n")) +'  >> wrong', status : 'false'})
+        }
+    })
+
 })
+
+
+
+// -------- GET MESSAGES --------
+
+app.get('/api/getmessages',(req,res)=>{
+    const { language } = req.query;
+    const GET_MESSAGES = `SELECT * FROM messages WHERE language='${language}'`
+
+    connection.query(GET_MESSAGES,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({ data : result })
+    })
+})
+
+// -------- SEND MESSAGE ---------
+
+app.get('/api/sendmessage',(req,res)=>{
+    const { language, message, user } = req.query;
+    const SEND_MESSAGE = `INSERT INTO messages(language, message, user) VALUES('${language}','${message}','${user}')`
+
+    connection.query(SEND_MESSAGE,(err,result)=>{
+        if(err){return console.log(err)}
+
+        return res.send('sent');
+    })
+})
+
+
+// ------ CHECK COMPLETED ------
+
+
+app.get('/api/checkcompleted',(req,res)=>{
+    const { uid, cid } = req.query;
+    const CHECK_COMPLETED = `SELECT * FROM completed WHERE userid='${uid}' AND challengeid='${cid}'`
+
+    connection.query(CHECK_COMPLETED,(err,result)=>{
+        if(err){return console.log(err)}
+
+        return res.json({ data : result})
+    })
+})
+
+
+// ------ ADD COMPLETE -------
+
+app.get('/api/addcomplete',(req,res)=>{
+    const { uid, cid } = req.query;
+    const ADD_COMPLETE = `INSERT INTO completed(userid, challengeid) VALUES('${uid}','${cid}')`
+
+    connection.query(ADD_COMPLETE,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({data:'true'})
+    })
+})
+
+
 
 
 app.listen(4000, ()=>{
