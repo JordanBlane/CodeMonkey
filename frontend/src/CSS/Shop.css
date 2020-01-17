@@ -1,0 +1,40 @@
+#avatardisplayimage{
+    width:100px;
+    height:100px;
+    margin-right:15px;
+}
+
+#showavatarsdiv{
+    width:80%;
+    height:100%;
+    position: absolute;
+    left:12.5%;
+    top:20%;
+}
+#avatarstitle{
+    position: absolute;
+    left:45%;
+    font-size:250%;
+}
+
+#notowneddiv{
+    position: absolute;
+    width:80%;
+    height:80%;
+    background-color:pink;
+    left:12%;
+    top:10%;
+    display:none;
+}
+
+#imagepreview{
+    width:100px;
+    height:100px;
+    position: relative;
+}
+
+#showpoints{
+    position:absolute;
+    top:4%;
+    left:57%;
+}

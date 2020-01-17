@@ -47,6 +47,8 @@ export class ChallengePage extends React.Component {
         .then((data)=>{
             this.setState({ profile : data.data[0]})
         })
+    }else{
+      return document.location.href='http://localhost:3000/'
     }
     const values = queryString.parse(this.props.location.search)
     fetch(`http://localhost:4000/api/getquestions?id=${values.id}`)

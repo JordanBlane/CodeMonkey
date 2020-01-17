@@ -9,7 +9,9 @@ export class MainPage extends React.Component{
 
         this.state = {
             profile: "",
-            message:"javascript"
+            message:"javascript",
+            image : null,
+            messagesopen : false
         }
 
         this.InitialiseUser.bind(this);
@@ -42,7 +44,11 @@ export class MainPage extends React.Component{
             .then(response => response.json())
             .then((data)=>{
                 this.setState({ profile : data.data[0]})
+                console.log(data.data[0].avatar)
+                document.getElementById('avatar').src=`${data.data[0].avatar}`
             })
+        }else{
+            document.location.href='http://localhost:3000/'
         }
     }
 
@@ -71,6 +77,16 @@ export class MainPage extends React.Component{
                 messagediv.innerHTML += `<div>` +data.data[i].user +' : ' +data.data[i].message +`</div>`
             }
         })
+    }
+
+    togglemessages = () => {
+        if(this.state.messagesopen == false){
+            document.getElementById('messagediv').style.display = 'block'
+            this.setState({messagesopen : true})
+        }else{
+            document.getElementById('messagediv').style.display = 'none'
+            this.setState({messagesopen : false})
+        }
     }
 
 
@@ -111,12 +127,14 @@ export class MainPage extends React.Component{
 
     render(){
         return(
-            <div className="mainPageWrapper">
+            <div className="mainPageWrapper" id='mainPageWrapper'>
                 <div className="topBar">
                      <h4 id='title'>Hello {this.state.profile.username}</h4>
                     <div className="topbardiv">
+                        <button onClick={()=>{document.cookie = 'username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';document.location.href='http://localhost:3000/'}}>Log Out</button>
+                        <button id='shopbutton' onClick={()=>{document.location.href='http://localhost:3000/shop'}}>shop</button>
                         <button id='settingsbutton'>settings</button>
-                        <button id='profilebutton'>profile</button>
+                        <img id='avatar' onClick={()=>{document.location.href='http://localhost:3000/profile'}}/>
                         <h4 id='userslevel'>{this.state.profile.level}</h4>
                         <h4 id='userspoints'>points: {this.state.profile.points}</h4>
                     </div>
@@ -126,7 +144,8 @@ export class MainPage extends React.Component{
                     <div id='searchResults'>
                     </div>
                 </div>
-                <div className='messageDiv'>
+                <button id='togglemessages' onClick={()=>{this.togglemessages()}}>Show Messages</button>
+                <div className='messageDiv' id='messagediv'>
                     <div className='chooselanguage'>
                         <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'javascript'})}}>Javascript</button>
                         <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'c'})}}>C</button>

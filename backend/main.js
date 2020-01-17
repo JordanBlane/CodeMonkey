@@ -32,7 +32,9 @@ app.get('/api',(req,res)=>{
 
 app.get('/api/adduser', (req,res)=>{
     const { name, password } = req.query;
-    const ADD_USER = `INSERT INTO users(username,password,level,points) VALUES('${name}', '${password}',0,0)`
+    var random = Math.floor(Math.random() *3);
+    var avatars = ['https://i.ibb.co/72XFnLn/avatar-1.jpg',"https://i.ibb.co/BrbHGPS/avatar-2.jpg","https://i.ibb.co/Qdtcyxm/avatar-3.jpg"]
+    const ADD_USER = `INSERT INTO users(username,password,level,points,avatar) VALUES('${name}', '${password}',0,0,'${avatars[random]}')`
     const FIND_USER = `SELECT * FROM users WHERE username="${name}"`
 
     connection.query(FIND_USER,(err,result)=>{
@@ -41,7 +43,11 @@ app.get('/api/adduser', (req,res)=>{
         if(!result[0]){
             connection.query(ADD_USER,(err,results)=>{
                 if(err){return console.log(err)}
-                return res.json({ data : 'user added'});
+                const GET_AVATARS = `INSERT INTO unlockedavatar(uid,avatar) VALUES('${results.id}','${avatars[random]}')`
+                connection.query(GET_AVATARS,(err,ress)=>{
+                    if(err){return console.log(err)}
+                    return res.json({ data : 'user added'});
+                })
             })
         }else{
             return res.json({ data : 'user exsists' });
@@ -230,6 +236,95 @@ app.get('/api/addcomplete',(req,res)=>{
 })
 
 
+
+// -------- BUY AVATAR --------
+
+app.get('/api/buyavatar',(req,res)=>{
+    const { uid, avatar, price } = req.query;
+    const FIND_POINTS = `SELECT points FROM users WHERE id='${uid}'`
+
+    connection.query(FIND_POINTS,(err,result)=>{
+        if(err){return console.log(err)}
+        const TAKE_AWAY_POINTS = `UPDATE users SET points = points - ${price} WHERE id=${uid}`
+        console.log(result[0].points)
+        console.log(price)
+        if(price > result[0].points){
+            console.log('less')
+            return res.json({data : 'false'})
+        }else{
+            connection.query(TAKE_AWAY_POINTS,(err,results)=>{
+                if(err){return console.log(err)}
+                const ADD_AVATAR = `INSERT INTO unlockedavatar(uid,avatar) VALUES(${uid},'${avatar}')`
+                connection.query(ADD_AVATAR,(err,ress)=>{
+                    if(err){return console.log(err)}
+                    return res.json({data:'done'})
+                })
+            })
+        }
+    })
+})
+
+
+// ------- UNLOCKED AVATAR --------
+
+app.get('/api/unlocked',(req,res)=>{
+    const { uid, avatar } = req.query;
+    const FIND_UNLOCKED = `SELECT * FROM unlockedavatar WHERE uid=${uid} AND avatar='${avatar}'`
+
+    connection.query(FIND_UNLOCKED,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({ data : result})
+    })
+})
+
+
+// -------  SET AVATAR --------
+
+app.get('/api/setavatar',(req,res)=>{
+    const { avatar, uid } = req.query;
+    const SET_AVATAR = `UPDATE users SET avatar='${avatar}' WHERE id=${uid}`
+
+    connection.query(SET_AVATAR,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({data : 'true'})
+    })
+})
+
+
+// ------- GET PRICE ------
+
+app.get('/api/getprice',(req,res)=>{
+    const { avatar } = req.query;
+    const GET_PRICE = `SELECT points FROM avatarpoints WHERE avatar='${avatar}'`
+
+    connection.query(GET_PRICE,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({ data : result })
+    })
+})
+
+// -------- CLEAR MESSAGES --------
+
+app.get('/api/clearmessages',(req,res)=>{
+    const CLEAR_MESSAGES = `DELETE * FROM messages`
+
+    connection.query(CLEAR_MESSAGES,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({data:'done'})
+    })
+})
+
+// -------- GET COMPLETED CHALLENGES --------
+
+app.get('/api/getcompleted',(req,res)=>{
+    const { uid } = req.query;
+    const GET_COMPLETED = `SELECT * FROM completed WHERE userid=${uid}`
+
+    connection.query(GET_COMPLETED,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({ data : result })
+    })
+})
 
 
 app.listen(4000, ()=>{

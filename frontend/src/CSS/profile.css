@@ -1,167 +1,45 @@
-@import url('https://fonts.googleapis.com/css?family=Kanit&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Hind+Madurai&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Patua+One&display=swap');
-
-*{
-    padding:0;
-    margin:0;
-    outline:0;
+#username{
+    position: absolute;
+    top:10%;
+    left:25%;
+    font-size:300%;
 }
 
-#ProfileUsername{
-    font-family: 'Kanit', sans-serif;
-    display: block;
-    width:100%;
-    height:10%;
-    font-size: 5vh;
-    overflow: hidden;
-}
-#ProfileBio, .profileContainer h3{
-    font-family: 'Hind Madurai', sans-serif;
-    display: block;
-    width:100%;
-    height:5%
-}
-#ProfileBio{
-    font-size: 4vh;
-}
-.profileContainer h3{
-    font-size: 3vh;
-}
-.profileContainer{
-    text-align: center;
-    background-color: transparent;
-    display: block;
-    position: relative;
-    width: 80vw;
+#showavatarprofile{
+    position: absolute;
+    top:10%;
     left:10%;
-
-
-    animation-name: profileAnim;
-    animation-timing-function: ease-out;
-    animation-duration: 1s;
-    animation-direction: reverse;
-    animation-fill-mode: forwards;
-    
+    width:150px;
+    height:150px;
+    border-radius:100px;
 }
 
-.profileBackButton{
-    color: white;
-    background-color: rgb(88, 188, 235);;
-    font-size: 3vh;
-    font-family: 'Patua One', cursive;
-    letter-spacing: 1vw;
-    width: 100%;
-    height: 5%;
-    position: relative;
-}
-
-.profileBackButton p{
-    transition: all 0.5s;
+.completedChallenges{
+    width:80%;
+    height:60%;
+    border:2px solid grey;
     position: absolute;
-    width:20%;
-    height: 100%;
-    left:40%;
-}
-.profileBackButton p:hover{
-    cursor: pointer;
-    letter-spacing: 1.5vw;
+    bottom:0;
+    right:10%;
 }
 
-@keyframes profileAnim{
-    100%{
-        height:0vh;
-        border-left: 3px solid transparent;
-        border-right: 3px solid transparent;
-    }
-    50%{
-        height:100vh;
-    }
-    49%{
-        border-left: 3px solid transparent;
-        border-right: 3px solid transparent;
-    }
-    0%{
-        border-left: 3px solid rgb(0, 195, 255);
-        border-right: 3px solid rgb(0, 195, 255);
-        height:100vh;
-    }
+#completedchallengestitle{
+    position: absolute;
+    left:38%;
+    font-size:150%;
+    top:-3%;
 }
 
-.changeDiv{
-    display: block;
-    width: 100%;
-    padding-top: 0.5%;
+#showchallenges{
     width:100%;
-}
-.changeDiv button{
-    padding:0.3%;
-    margin-left:10px;
-    width: 20%;
-    background-color: rgb(0, 195, 255);
-    border: none;
-    color: white;
-    border-radius: 5%;
-    
-} 
-.changeDiv button:focus{
-    outline:0;
-}
-
-.changeDiv button:hover{
-    cursor: pointer;
-    background-color: rgb(0, 162, 255);
-    color: white;
-}
-.changeDiv input{
-    padding:0.1%;
-    width: 15%;
-    transition: width 1s;
-    border-radius: 10%;
-    border:2px solid rgb(0, 195, 255);
-
-}
-.changeDiv input:focus{
-    width: 25%;
-    outline:none;
-}
-
-.profileDeleteAccount{
-    background-color: rgb(218, 5, 5);
-    color: white;
-    width: 20%;
-    height: 4%;
-    position: relative;
-    left:40%;
-    top: 2%;
-}
-.profileDeleteAccount p{
-    position: relative;
-    height: 50%;
-    width: 100%;
-    
-}
-.profileDeleteAccount:hover{
-    background-color: rgb(148, 0, 0);
-    cursor: pointer;
-}
-
-.profileFriendsDiv{
-    margin-left:-2px;
-    width: 49.8%;
-    height: 50%;
-    border:2px solid rgb(0, 195, 255);
-    overflow-y: scroll;
-    position: relative;
-    margin-top: 1%;
-}
-.profileFollowersDiv{
-    top:34.2%;
-    right:-2px;
-    width: 49.8%;
-    height: 50%;
-    border:2px solid rgb(0, 195, 255);
-    overflow-y: scroll;
+    height:85%;
     position: absolute;
-    margin-top: 1%;
+    bottom:0;
+    overflow-y: scroll;
+    left:-2px;
+}
+
+#showchallenges{
+    text-align:center;
+    color:black;
 }
