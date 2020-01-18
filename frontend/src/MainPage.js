@@ -11,7 +11,8 @@ export class MainPage extends React.Component{
             profile: "",
             message:"javascript",
             image : null,
-            messagesopen : false
+            messagesopen : false,
+            pointstonextlevel : 0
         }
 
         this.InitialiseUser.bind(this);
@@ -45,6 +46,13 @@ export class MainPage extends React.Component{
             .then((data)=>{
                 this.setState({ profile : data.data[0]})
                 document.getElementById('avatar').src=`${data.data[0].avatar}`
+                var pointsto = data.data[0].levelup - data.data[0].points
+                if(pointsto > 0){
+                    this.setState({pointstonextlevel : pointsto})
+                    document.getElementById('levelupbutton').style.display = 'none'
+                }else{
+                    document.getElementById('pointsto').style.display = 'none'
+                }
             })
         }else{
             document.location.href=`http://${hostname}:3000/`
@@ -116,9 +124,9 @@ export class MainPage extends React.Component{
                         .then(response => response.json())
                         .then((data_)=>{
                             if(data_.data[0]){
-                                searchresultsdiv.innerHTML += `<div id='showquestiondiv'> <h3 id="questionName">${data.data[0].name}    ✓</h3> <p id="questionDiscription">${data.data[0].description}</p> <p id="questionLanguage">${data.data[0].language}</p><button id="questionButton" onClick={document.location.href='http://localhost:3000/challenge?id=${data.data[0].id}'}>Go To Challenge</button></div>`
+                                searchresultsdiv.innerHTML += `<div id='showquestiondiv'> <h3 id="questionName">${data.data[0].name}    ✓</h3> <p id="questionDiscription">${data.data[0].description}</p> <p id="questionLanguage">${data.data[0].language}</p><button id="questionButton" onClick={document.location.href='http://${hostname}:3000/challenge?id=${data.data[0].id}'}>Go To Challenge</button></div>`
                             }else{
-                                searchresultsdiv.innerHTML += `<div id='showquestiondiv'> <h3 id="questionName">${data.data[0].name}</h3> <p id="questionDiscription">${data.data[0].description}</p> <p id="questionLanguage">${data.data[0].language}</p><button id="questionButton" onClick={document.location.href='http://localhost:3000/challenge?id=${data.data[0].id}'}>Go To Challenge</button></div>`
+                                searchresultsdiv.innerHTML += `<div id='showquestiondiv'> <h3 id="questionName">${data.data[0].name}</h3> <p id="questionDiscription">${data.data[0].description}</p> <p id="questionLanguage">${data.data[0].language}</p><button id="questionButton" onClick={document.location.href='http://${hostname}:3000/challenge?id=${data.data[0].id}'}>Go To Challenge</button></div>`
                             }
                         })
                     })
@@ -131,6 +139,15 @@ export class MainPage extends React.Component{
     }
 
 
+    levelup = () => {
+        fetch(`http://${hostname}:4000/api/levelup?uid=${this.state.profile.id}`)
+        .then(response => response.json())
+        .then((data)=>{
+            console.log(data)
+        })
+    }
+
+
     render(){
         return(
             <div className="mainPageWrapper" id='mainPageWrapper'>
@@ -139,10 +156,11 @@ export class MainPage extends React.Component{
                 <button id='logoutbutton' onClick={()=>{document.cookie = 'username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';document.location.href=`http://${hostname}:3000/`}}>Log Out</button>
                 <button id='shopbutton' onClick={()=>{document.location.href=`http://${hostname}:3000/shop`}}>shop</button>
                 <button id='settingsbutton'>⚙</button>
-                <h4 id='userslevel'>Level: {this.state.profile.level}</h4>
+        <h4 id='userslevel'>Level: {this.state.profile.level} - <span id='pointsto'>Points till next level: {this.state.pointstonextlevel}</span></h4>
                 <h4 id='userspoints'>Points: {this.state.profile.points}</h4>
 
                 <div className="topBar"></div>
+                <button id='levelupbutton' onClick={()=>{this.levelup()}}>Level Up</button>
 
                 <div className="searchDiv">
                     <input id='searchBar' onChange={this.search} placeholder="search for challenges"/>

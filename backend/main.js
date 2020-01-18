@@ -34,7 +34,7 @@ app.get('/api/adduser', (req,res)=>{
     const { name, password } = req.query;
     var random = Math.floor(Math.random() *3);
     var avatars = ['https://i.ibb.co/72XFnLn/avatar-1.jpg',"https://i.ibb.co/BrbHGPS/avatar-2.jpg","https://i.ibb.co/Qdtcyxm/avatar-3.jpg"]
-    const ADD_USER = `INSERT INTO users(username,password,level,points,avatar) VALUES('${name}', '${password}',0,0,'${avatars[random]}')`
+    const ADD_USER = `INSERT INTO users(username,password,level,points,avatar,levelup) VALUES('${name}', '${password}',0,0,'${avatars[random]}',100)`
     const FIND_USER = `SELECT * FROM users WHERE username="${name}"`
 
     connection.query(FIND_USER,(err,result)=>{
@@ -218,6 +218,7 @@ app.get('/api/runpython',(req,res)=>{
     solution = solution.replace(/℗/g, '\n')
 
     runPython(code,'',cb= (err,result)=>{
+        console.log(result)
         if(result.substring(0,result.lastIndexOf("\n")) == solution){
             return res.json({ data :  result.substring(0,result.lastIndexOf("\n"))+'  >> correct', status : 'true'})
         }else{
@@ -371,6 +372,48 @@ app.get('/api/getcompleted',(req,res)=>{
         return res.json({ data : result })
     })
 })
+
+
+// ---------- CHECK LEVEL UP -----------
+
+
+app.get('/api/levelup',(req,res)=>{
+    const { uid } = req.query;
+    const GET_OBJ = `SELECT * FROM users WHERE id=${uid}`
+
+    connection.query(GET_OBJ,(err,result)=>{
+        if(err){return console.log(err)}
+        console.log(result[0].levelup)
+        console.log(result[0].points)
+        if(result[0].points >= result[0].levelup){
+            var level = result[0].level
+            var levelup = result[0].levelup
+
+            const TAKE_AWAY_POINTS = `UPDATE users SET points=${result[0].points} - ${result[0].levelup} WHERE id=${uid}`
+
+            connection.query(TAKE_AWAY_POINTS,(err,results)=>{
+                if(err){return console.log(err)}
+                
+                const SET_LEVEL = `UPDATE users SET level=${level} + 1 WHERE id=${uid}`
+
+                connection.query(SET_LEVEL,(err,ress)=>{
+                    if(err){return console.log(err)}
+
+                    const SET_LEVELUP = `UPDATE users SET levelup=${levelup} + ${levelup} WHERE id=${uid}`
+
+                    connection.query(SET_LEVELUP,(err,resss)=>{
+                        if(err){return console.log(err)}
+                        console.log('done');
+                    })
+                })
+            })
+        }else{
+            console.log('cant level up')
+        }
+    })
+})
+
+
 
 
 app.listen(4000, ()=>{
