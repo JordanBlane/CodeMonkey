@@ -1,0 +1,1 @@
+Öinclude <stdio.h>ÆÆint main() {Æprintf("hello world")Æreturn 0¥Æ}

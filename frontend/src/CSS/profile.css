@@ -1,8 +1,16 @@
+.profilePageWrapper{
+    background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHBgYGBw0HBwcGBw0PBwcNCA8SDRAWFREaFhgRHxMYHSggGBolGxMfITEhJSkrLi4uFx8zODM4NygtLjcBCgoKDQ0NDg0NDysZFRk3LS0rKystKysrKystKysrKysrKysrLSsrKy0rKysrKysrNzcrKysrKysrKysrKysrK//AABEIAKgBLAMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAACAQAFA//EABYQAQEBAAAAAAAAAAAAAAAAAAARAf/EABcBAQEBAQAAAAAAAAAAAAAAAAEABQT/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A7kSHEjWrvCNDiQ0BEhxIahiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCNCjQ0BEhxIahiHEhqFljQhGZkmZmSdqNDiRmV0hEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIagjQ4kNARIcaGp5xocSGgIkONDUEQ4kNTuxIcSMquoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ1BEhxoaAiQ4kNQRoUaGh3I0OJGVXUESHEhqCNDiQ0BEhxoagiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NECJDiQ1BGhRoagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIandiQ4kZVdQRocSGgIkOJDUMSHEhoCJDjQ1BEhxIaAjQ4kNQRIcSGoI0OJDQESHGhqCJDiQ0BEhxoagiQ4kNARocSGoIkOJDQMSHEhqCJDjQ0BEhxIagjQo0NDuRocSMqusIkOJDQEaHEhqCJDjQ0BEhxIagjQo0NARIcSGoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSKp3YkOJGXXUEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ0BEhxoagiQ4kVARIcaGoIkOJDQEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0KNDQ7kaHEjKrrCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqd2JDiRlV1BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0R3GjMy3WkSEyoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDUEaHEhoCJDjQ1BEhxIaAiQ40NQRIcSGgI0OJDUESHEhoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDU7DMzNdLMzJMzMkzRmKSJFZBIkZikjRmISJGYpI0RiGiRWKSJGYhIkVikiRmISNEYpokZiGiRmKSJuMxDRIzERI0Zio//9k=');
+    background-size: cover;
+    width:100vw;
+    height:100vh;
+}
+
 #username{
     position: absolute;
     top:10%;
     left:25%;
     font-size:300%;
+    color:white;
 }
 
 #showavatarprofile{
@@ -17,9 +25,10 @@
 .completedChallenges{
     width:80%;
     height:60%;
-    border:2px solid grey;
+    background-color:white;
+    border-radius:50px;
     position: absolute;
-    bottom:0;
+    bottom:5%;
     right:10%;
 }
 
@@ -42,4 +51,49 @@
 #showchallenges{
     text-align:center;
     color:black;
+}
+
+#challengeDiv{
+    position: relative;
+    background-color:grey;
+    width:60%;
+    left:20%;
+    border-radius: 100px;
+    height:20%;
+    margin-bottom:3%;
+    overflow-y: scroll;
+}
+
+#challengeTitle{
+    color:white;
+    position: absolute;
+    left:10%;
+    top:-10%;
+    font-size:120%;
+}
+
+#challengeLanguage{
+    color:white;
+    position: absolute;
+    left:10%;
+    top:40%;
+}
+
+#backprofile{
+    position: absolute;
+    top:2%;
+    left:2%;
+    width:10%;
+    height:5%;
+    border-color: transparent;
+    border-radius:100px;
+    background-color:lightgrey;
+    color:grey;
+    font-size:80%;
+    font-weight: 900;
+    transition-duration: 1s;
+}
+
+#backprofile:hover{
+    background-color:#a6dba7;
 }

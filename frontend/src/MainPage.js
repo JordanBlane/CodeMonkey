@@ -40,15 +40,14 @@ export class MainPage extends React.Component{
         nameFromCookie = nameFromCookie.split('=');
         let username = nameFromCookie[1];
         if(username != '' || username != undefined){
-            fetch(`http://localhost:4000/api/profile?name=${username}`)
+            fetch(`http://${hostname}:4000/api/profile?name=${username}`)
             .then(response => response.json())
             .then((data)=>{
                 this.setState({ profile : data.data[0]})
-                console.log(data.data[0].avatar)
                 document.getElementById('avatar').src=`${data.data[0].avatar}`
             })
         }else{
-            document.location.href='http://localhost:3000/'
+            document.location.href=`http://${hostname}:3000/`
         }
     }
 
@@ -57,16 +56,15 @@ export class MainPage extends React.Component{
     sendmessage = () => {
         var messageinput = document.getElementById('messageinput')
 
-        fetch(`http://localhost:4000/api/sendmessage?language=${this.state.message}&message=${messageinput.value}&user=${this.state.profile.username}`)
+        fetch(`http://${hostname}:4000/api/sendmessage?language=${this.state.message}&message=${messageinput.value}&user=${this.state.profile.username}`)
         .then(response => response.json())
         .then((data)=>{
-            console.log(data)
         })
     }
 
 
     updatemessages = () => {
-        fetch(`http://localhost:4000/api/getmessages?language=${this.state.message}`)
+        fetch(`http://${hostname}:4000/api/getmessages?language=${this.state.message}`)
         .then(response => response.json())
         .then((data)=>{
             var messagediv = document.getElementById('showmessagesdiv')
@@ -93,7 +91,7 @@ export class MainPage extends React.Component{
     search = () => {
         var searchBarInput = document.getElementById('searchBar').value;
 
-        fetch(`http://localhost:4000/api/showquestions?questionname=${searchBarInput}`)
+        fetch(`http://${hostname}:4000/api/showquestions?questionname=${searchBarInput}`)
         .then(response => response.json())
         .then((data)=>{
             var searchresultsdiv = document.getElementById('searchResults');
@@ -111,10 +109,18 @@ export class MainPage extends React.Component{
                 for(let i=0;i<data.length;i++){
                     var id = '';
 
-                    fetch(`http://localhost:4000/api/getquestions?id=${i+1}`)
+                    fetch(`http://${hostname}:4000/api/getquestions?id=${data[i].id}`)
                     .then(response => response.json())
                     .then((data)=>{
-                        searchresultsdiv.innerHTML += `<div id='showquestiondiv'> <h3>${data.data[0].name}</h3> <p>${data.data[0].description}</p> <button onClick={document.location.href='http://localhost:3000/challenge?id=${data.data[0].id}'}>Go To Challenge</button></div>`
+                        fetch(`http://${hostname}:4000/api/checkcompleted?uid=${this.state.profile.id}&cid=${data.data[0].id}`)
+                        .then(response => response.json())
+                        .then((data_)=>{
+                            if(data_.data[0]){
+                                searchresultsdiv.innerHTML += `<div id='showquestiondiv'> <h3 id="questionName">${data.data[0].name}    ✓</h3> <p id="questionDiscription">${data.data[0].description}</p> <p id="questionLanguage">${data.data[0].language}</p><button id="questionButton" onClick={document.location.href='http://localhost:3000/challenge?id=${data.data[0].id}'}>Go To Challenge</button></div>`
+                            }else{
+                                searchresultsdiv.innerHTML += `<div id='showquestiondiv'> <h3 id="questionName">${data.data[0].name}</h3> <p id="questionDiscription">${data.data[0].description}</p> <p id="questionLanguage">${data.data[0].language}</p><button id="questionButton" onClick={document.location.href='http://localhost:3000/challenge?id=${data.data[0].id}'}>Go To Challenge</button></div>`
+                            }
+                        })
                     })
                 }
             }else{
@@ -128,34 +134,35 @@ export class MainPage extends React.Component{
     render(){
         return(
             <div className="mainPageWrapper" id='mainPageWrapper'>
-                <div className="topBar">
-                     <h4 id='title'>Hello {this.state.profile.username}</h4>
-                    <div className="topbardiv">
-                        <button onClick={()=>{document.cookie = 'username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';document.location.href='http://localhost:3000/'}}>Log Out</button>
-                        <button id='shopbutton' onClick={()=>{document.location.href='http://localhost:3000/shop'}}>shop</button>
-                        <button id='settingsbutton'>settings</button>
-                        <img id='avatar' onClick={()=>{document.location.href='http://localhost:3000/profile'}}/>
-                        <h4 id='userslevel'>{this.state.profile.level}</h4>
-                        <h4 id='userspoints'>points: {this.state.profile.points}</h4>
-                    </div>
-                </div>
+                <img id='avatar' onClick={()=>{document.location.href=`http://${hostname}:3000/profile`}}/>
+                <h2 id='usernamedisplay'>{this.state.profile.username}</h2>
+                <button id='logoutbutton' onClick={()=>{document.cookie = 'username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';document.location.href=`http://${hostname}:3000/`}}>Log Out</button>
+                <button id='shopbutton' onClick={()=>{document.location.href=`http://${hostname}:3000/shop`}}>shop</button>
+                <button id='settingsbutton'>⚙</button>
+                <h4 id='userslevel'>Level: {this.state.profile.level}</h4>
+                <h4 id='userspoints'>Points: {this.state.profile.points}</h4>
+
+                <div className="topBar"></div>
+
                 <div className="searchDiv">
                     <input id='searchBar' onChange={this.search} placeholder="search for challenges"/>
                     <div id='searchResults'>
                     </div>
                 </div>
-                <button id='togglemessages' onClick={()=>{this.togglemessages()}}>Show Messages</button>
-                <div className='messageDiv' id='messagediv'>
-                    <div className='chooselanguage'>
-                        <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'javascript'})}}>Javascript</button>
-                        <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'c'})}}>C</button>
-                        <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'c++'})}}>C++</button>
-                        <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'python'})}}>Python</button>
-                    </div>
-                    <div className='showmessagesdiv' id='showmessagesdiv'>
-                        
+                <div id='mainpagediv'>
+                    <button id='togglemessages' onClick={()=>{this.togglemessages()}}>Show Messages</button>
+                    <div className='messageDiv' id='messagediv'>
+                        <div className='chooselanguage'>
+                            <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'javascript'})}}>Javascript</button>
+                            <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'c'})}}>C</button>
+                            <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'c++'})}}>C++</button>
+                            <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'python'})}}>Python</button>
                         </div>
-                    <input id='messageinput' placeholder='Send a message'/>
+                        <div className='showmessagesdiv' id='showmessagesdiv'>
+                            
+                            </div>
+                        <input id='messageinput' placeholder='Send a message'/>
+                    </div>
                 </div>
             </div>
         )

@@ -26,19 +26,19 @@ export class ShopPage extends React.Component {
     nameFromCookie = nameFromCookie.split('=');
     let username = nameFromCookie[1];
     if(username != '' || username != undefined){
-        fetch(`http://localhost:4000/api/profile?name=${username}`)
+        fetch(`http://${hostname}:4000/api/profile?name=${username}`)
         .then(response => response.json())
         .then((data)=>{
             this.setState({ profile : data.data[0]})
             this.getShop();
         })
     }else{
-        return document.location.href='http://localhost:3000/'
+        return document.location.href=`http://${hostname}:3000/`
     }
 }
 
 buy = () => {
-    fetch(`http://localhost:4000/api/buyavatar?uid=${this.state.profile.id}&avatar=${this.state.wanttobuy}&price=${this.state.price}`)
+    fetch(`http://${hostname}:4000/api/buyavatar?uid=${this.state.profile.id}&avatar=${this.state.wanttobuy}&price=${this.state.price}`)
     .then(response => response.json())
     .then((data)=>{
         console.log('done')
@@ -83,12 +83,12 @@ getShop = () => {
     }
     for(let i=0;i<document.getElementsByClassName('loop').length;i++){
         document.getElementsByClassName('loop')[i].addEventListener('click',(e)=>{
-            fetch(`http://localhost:4000/api/unlocked?uid=${this.state.profile.id}&avatar=${e.target.src}`)
+            fetch(`http://${hostname}:4000/api/unlocked?uid=${this.state.profile.id}&avatar=${e.target.src}`)
             .then(response => response.json())
             .then((data)=>{
                 if(data.data[0]){
                     console.log('you own this')
-                    fetch(`http://localhost:4000/api/setavatar?avatar=${e.target.src}&uid=${this.state.profile.id}`)
+                    fetch(`http://${hostname}:4000/api/setavatar?avatar=${e.target.src}&uid=${this.state.profile.id}`)
                     .then(response => response.json())
                     .then((data)=>{
                         console.log(data)
@@ -99,7 +99,7 @@ getShop = () => {
                     document.getElementById('notowneddiv').style.display = 'block';
                     this.setState({wanttobuy : e.target.src})
                     document.getElementById('imagepreview').src=`${this.state.wanttobuy}`
-                    fetch(`http://localhost:4000/api/getprice?avatar=${e.target.src}`)
+                    fetch(`http://${hostname}:4000/api/getprice?avatar=${e.target.src}`)
                     .then(response => response.json())
                     .then((data)=>{
                         document.getElementById('imagepoints').innerHTML = `Points: ${data.data[0].points}`
@@ -117,17 +117,17 @@ getShop = () => {
   render(){
     return(
       <div className="shopPageWrapper">
-          <h2 id='avatarstitle'>Avatars</h2>
+          <h2 id='avatarstitle'>Shop</h2>
         <h4 id='showpoints'>Points: {this.state.profile.points}</h4>
-        <button onClick={()=>{document.location.href='http://localhost:3000/main'}}>Back</button>
+        <button id='backbuttonshop'onClick={()=>{document.location.href=`http://${hostname}:3000/main`}}>Back</button>
         <div id='showavatarsdiv'>
 
         </div>
         <div id='notowneddiv'>
-            <h4>DO YOU WANT TO BUY?</h4>
+            <h4 id='dywtb'>DO YOU WANT TO BUY?</h4>
             <p id='imagepoints'></p>
-            <button onClick={()=>{this.buy()}}>Yes</button>
-            <button onClick={()=>{document.getElementById('notowneddiv').style.display = 'none';}}>No</button>
+            <button id='yesbutton'onClick={()=>{this.buy()}}>Yes</button>
+            <button id='nobutton'onClick={()=>{document.getElementById('notowneddiv').style.display = 'none';}}>No</button>
             <img id='imagepreview'/>
         </div>
       </div>

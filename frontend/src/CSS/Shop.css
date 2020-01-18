@@ -1,3 +1,11 @@
+.shopPageWrapper{
+    background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHBgYGBw0HBwcGBw0PBwcNCA8SDRAWFREaFhgRHxMYHSggGBolGxMfITEhJSkrLi4uFx8zODM4NygtLjcBCgoKDQ0NDg0NDysZFRk3LS0rKystKysrKystKysrKysrKysrLSsrKy0rKysrKysrNzcrKysrKysrKysrKysrK//AABEIAKgBLAMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAACAQAFA//EABYQAQEBAAAAAAAAAAAAAAAAAAARAf/EABcBAQEBAQAAAAAAAAAAAAAAAAEABQT/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A7kSHEjWrvCNDiQ0BEhxIahiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCNCjQ0BEhxIahiHEhqFljQhGZkmZmSdqNDiRmV0hEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIagjQ4kNARIcaGp5xocSGgIkONDUEQ4kNTuxIcSMquoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ1BEhxoaAiQ4kNQRoUaGh3I0OJGVXUESHEhqCNDiQ0BEhxoagiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NECJDiQ1BGhRoagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIandiQ4kZVdQRocSGgIkOJDUMSHEhoCJDjQ1BEhxIaAjQ4kNQRIcSGoI0OJDQESHGhqCJDiQ0BEhxoagiQ4kNARocSGoIkOJDQMSHEhqCJDjQ0BEhxIagjQo0NDuRocSMqusIkOJDQEaHEhqCJDjQ0BEhxIagjQo0NARIcSGoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSKp3YkOJGXXUEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ0BEhxoagiQ4kVARIcaGoIkOJDQEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0KNDQ7kaHEjKrrCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqd2JDiRlV1BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0R3GjMy3WkSEyoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDUEaHEhoCJDjQ1BEhxIaAiQ40NQRIcSGgI0OJDUESHEhoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDU7DMzNdLMzJMzMkzRmKSJFZBIkZikjRmISJGYpI0RiGiRWKSJGYhIkVikiRmISNEYpokZiGiRmKSJuMxDRIzERI0Zio//9k=');
+    background-size: cover;
+    width:100vw;
+    height:100vh;
+
+}
+
 #avatardisplayimage{
     width:100px;
     height:100px;
@@ -10,31 +18,116 @@
     position: absolute;
     left:12.5%;
     top:20%;
+
 }
 #avatarstitle{
     position: absolute;
-    left:45%;
+    left:46%;
+    color:white;
     font-size:250%;
+    top:-2%;
 }
 
 #notowneddiv{
     position: absolute;
-    width:80%;
-    height:80%;
-    background-color:pink;
-    left:12%;
+    width:50%;
+    height:70%;
+    background-color:white;
+    left:25%;
     top:10%;
     display:none;
+    border-radius: 50px;
 }
 
 #imagepreview{
-    width:100px;
-    height:100px;
-    position: relative;
+    width:150px;
+    height:150px;
+    position: absolute;
+    left:38%;
+    top:30%;
+    border-radius:100px;
 }
 
 #showpoints{
     position:absolute;
+    top:2.5%;
+    right:9%;
+    color:white;
+}
+
+#imagepoints{
+    position: absolute;
+    top:10%;
+    left:44%;
+}
+
+#yesbutton{
+    position: absolute;
+    top:80%;
+    left:10%;
+    width:30%;
+    height:10%;
+    border-color:transparent;
+    background-color:#a6dba7;
+    border-radius: 100px;
+    font-size:80%;
+    color:white;
+    font-weight:900;
+    transition-duration: 1s;
+}
+
+#nobutton{
+    position: absolute;
+    top:80%;
+    right:10%;
+    width:30%;
+    height:10%;
+    border-color:transparent;
+    background-color:lightgrey;
+    border-radius:100px;
+    font-size:80%;
+    color:grey;
+    font-weight:900; 
+    transition-duration: 1s;
+}
+
+#nobutton:hover{
+    width:35%;
+    right:7.5%;
+    height:15%;
+    top:77.5%
+}
+
+#yesbutton:hover{
+    width:35%;
+    left:7.5%;
+    height:15%;
+    top:77.5%
+}
+
+#dywtb{
+    position: absolute;
+    left:37%;
+}
+
+#backbuttonshop{
+    position: absolute;
     top:4%;
-    left:57%;
+    left:4%;
+    width:10%;
+    height:5%;
+    background-color:lightgrey;
+    border-radius: 100px;
+    border-color:transparent;
+    color:grey;
+    font-size:80%;
+    font-weight:900;
+    transition-duration: 1s;
+}
+
+#backbuttonshop:hover{
+    width:15%;
+    left:1.5%;
+    height:7%;
+    top:3%;
 }

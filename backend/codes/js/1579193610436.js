@@ -1,1 +1,0 @@
-var http = require('http');var server = http.createServer(function(req, res){  res.send('testin')});server.listen(5000); 

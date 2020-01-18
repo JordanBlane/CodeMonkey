@@ -24,7 +24,7 @@ export class ProfilePage extends React.Component {
     nameFromCookie = nameFromCookie.split('=');
     let username = nameFromCookie[1];
     if(username != '' || username != undefined){
-        fetch(`http://localhost:4000/api/profile?name=${username}`)
+        fetch(`http://${hostname}:4000/api/profile?name=${username}`)
         .then(response => response.json())
         .then((data)=>{
             this.setState({ profile : data.data[0]})
@@ -32,21 +32,21 @@ export class ProfilePage extends React.Component {
             this.getCompleted()
         })
     }else{
-        return document.location.href='http://localhost:3000/'
+        return document.location.href=`http://${hostname}:3000/`
         }
     }
 
 
     getCompleted = () => {
-        fetch(`http://localhost:4000/api/getcompleted?uid=${this.state.profile.id}`)
+        fetch(`http://${hostname}:4000/api/getcompleted?uid=${this.state.profile.id}`)
         .then(response => response.json())
         .then((data)=>{
             for(let i=0;i<data.data.length;i++){
-                fetch(`http://localhost:4000/api/getquestions?id=${data.data[i].challengeid}`)
+                fetch(`http://${hostname}:4000/api/getquestions?id=${data.data[i].challengeid}`)
                 .then(response => response.json())
                 .then((data)=>{
                     console.log(data)
-                    document.getElementById('showchallenges').innerHTML += '<div> <h4>'+data.data[0].question+'</h4></div>'
+                    document.getElementById('showchallenges').innerHTML += '<div id="challengeDiv"> <h4 id="challengeTitle">'+data.data[0].question+'</h4> <p id="challengeLanguage">'+data.data[0].language+'</p></div>'
                 })
             }
         })
@@ -55,7 +55,7 @@ export class ProfilePage extends React.Component {
   render(){
     return(
       <div className="profilePageWrapper">
-          <button onClick={()=>{document.location.href='http://localhost:3000/main'}}>Back</button>
+          <button id='backprofile' onClick={()=>{document.location.href=`http://${hostname}:3000/main`}}>Back</button>
           <h2 id='username'>{this.state.profile.username}</h2>
           <img id='showavatarprofile'/>
 

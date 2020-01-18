@@ -1,42 +1,106 @@
 .loginPageWrapper{
   width:100vw;
   height:100vh;
-  background-color: white;
+  background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHBgYGBw0HBwcGBw0PBwcNCA8SDRAWFREaFhgRHxMYHSggGBolGxMfITEhJSkrLi4uFx8zODM4NygtLjcBCgoKDQ0NDg0NDysZFRk3LS0rKystKysrKystKysrKysrKysrLSsrKy0rKysrKysrNzcrKysrKysrKysrKysrK//AABEIAKgBLAMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAACAQAFA//EABYQAQEBAAAAAAAAAAAAAAAAAAARAf/EABcBAQEBAQAAAAAAAAAAAAAAAAEABQT/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A7kSHEjWrvCNDiQ0BEhxIahiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCNCjQ0BEhxIahiHEhqFljQhGZkmZmSdqNDiRmV0hEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIagjQ4kNARIcaGp5xocSGgIkONDUEQ4kNTuxIcSMquoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ1BEhxoaAiQ4kNQRoUaGh3I0OJGVXUESHEhqCNDiQ0BEhxoagiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NECJDiQ1BGhRoagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIandiQ4kZVdQRocSGgIkOJDUMSHEhoCJDjQ1BEhxIaAjQ4kNQRIcSGoI0OJDQESHGhqCJDiQ0BEhxoagiQ4kNARocSGoIkOJDQMSHEhqCJDjQ0BEhxIagjQo0NDuRocSMqusIkOJDQEaHEhqCJDjQ0BEhxIagjQo0NARIcSGoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSKp3YkOJGXXUEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ0BEhxoagiQ4kVARIcaGoIkOJDQEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0KNDQ7kaHEjKrrCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqd2JDiRlV1BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0R3GjMy3WkSEyoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDUEaHEhoCJDjQ1BEhxIaAiQ40NQRIcSGgI0OJDUESHEhoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDU7DMzNdLMzJMzMkzRmKSJFZBIkZikjRmISJGYpI0RiGiRWKSJGYhIkVikiRmISNEYpokZiGiRmKSJuMxDRIzERI0Zio//9k=');
+  background-size: cover;
 }
 
-.topBar{
-  width:100%;
-  height:5%;
-  background-color: red;
+#loginDiv{
+  position: absolute;
+  width:50%;
+  height:70%;
+  left:25%;
+  top:15%;
+  border-radius:30px;
+  background-color:white;
 }
+
 
 #usernameinput{
-  position:relative;
-  top:10%;
-  border:none;
-  height:70%;
-  text-align:center;
+  top:40%;
+  padding-left:30px;
+  position: absolute;
+  width:26%;
+  height:8%;
+  border-radius:100px;
+  background-color:lightgrey;
+  border:transparent;
+  left:55%;
+  transition-duration: 1s;
 }
+
 #passwordinput{
-  position: relative;
-  top:10%;
-  border:none;
-  height:70%;
-  text-align:center;
+  top:52%;
+  position: absolute;
+  padding-left:30px;
+  width:26%;
+  height:8%;
+  border-radius:100px;
+  background-color:lightgrey;
+  border:transparent;
+  left:55%;
+  transition-duration: 1s;
 }
+
 #loginbutton{
-  position: relative;
-  top:10%;
-  width:10%;
-  border:none;
-  height:70%;
-  text-align:center;
+  position: absolute;
+  left:55%;
+  width:30%;
+  height:8%;
+  border-radius:100px;
+  background-color:#a6dba7;
+  border:transparent;
+  top:65%;
+  color:white;
+  font-weight: 900;
+  font-size:80%;
+  transition-duration: 1s;
 }
+
 #signupbutton{
-  position: relative;
-  top:10%;
-  width:10%;
-  border:none;
-  height:70%;
-  text-align:center;
+  position: absolute;
+  top:85%;
+  left:55%;
+  width:30%;
+  height:8%;
+  border-radius:100px;
+  background-color:lightgrey;
+  border:transparent;
+  font-weight: 900;
+  font-size:80%;
+  color:grey;
+  transition-duration: 1s;
+}
+
+#logintext{
+  position: absolute;
+  left:61%;
+  font-size:120%;
+  top:20%;
+}
+
+
+/* ANIMATIONS */
+
+#usernameinput:focus{
+  position: absolute;
+  width:35%;
+  left:51%;
+}
+
+#passwordinput:focus{
+  position: absolute;
+  width:35%;
+  left:51%;
+}
+
+#loginbutton:hover{
+  position: absolute;
+  width:35%;
+  left:52.5%;
+}
+#signupbutton:hover{
+  position: absolute;
+  width:35%;
+  left:52.5%;
 }

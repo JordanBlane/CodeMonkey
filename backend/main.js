@@ -10,7 +10,7 @@ function get_connection(){
     return mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: 'Admin123',
+        password: '26265071',
         database: 'code',
         charset : 'utf8mb4'
     })
@@ -43,10 +43,16 @@ app.get('/api/adduser', (req,res)=>{
         if(!result[0]){
             connection.query(ADD_USER,(err,results)=>{
                 if(err){return console.log(err)}
-                const GET_AVATARS = `INSERT INTO unlockedavatar(uid,avatar) VALUES('${results.id}','${avatars[random]}')`
-                connection.query(GET_AVATARS,(err,ress)=>{
+                const GET_USER_OBJECT = `SELECT * FROM users WHERE username='${name}' AND password='${password}'`
+
+                connection.query(GET_USER_OBJECT,(err,ress)=>{
                     if(err){return console.log(err)}
-                    return res.json({ data : 'user added'});
+                    const GET_AVATARS = `INSERT INTO unlockedavatar(uid,avatar) VALUES('${ress[0].id}','${avatars[random]}')`
+                    connection.query(GET_AVATARS,(err,resss)=>{
+                        if(err){return console.log(err)}
+                        console.log('new user : ' +ress[0].username)
+                        return res.json({ data : 'user added'});
+                    })
                 })
             })
         }else{
@@ -116,11 +122,10 @@ app.get('/api/addpoints', (req,res)=>{
 
 app.get('/api/showquestions',(req,res)=>{
     const { questionname } = req.query;
-    const GET_QUESTIONS = `SELECT * FROM challenges WHERE question LIKE '%${questionname}%'`
+    const GET_QUESTIONS = `SELECT * FROM challenges WHERE question LIKE '%${questionname}%' OR language LIKE '%${questionname}%'`
 
     connection.query(GET_QUESTIONS,(err,result)=>{
         if(err){return console.log(err)}
-
         return res.send(result)
     })
 })
@@ -156,28 +161,69 @@ app.get('/api/addquestion',(req,res)=>{
 app.get('/api/runnode',(req,res)=>{
     var { code, solution } = req.query;
 
-    console.log(code)
+    code = code.replace('℗℗','++');
+    code = code.replace('℗','+');
+
+    solution = solution.replace(/℗/g, '\n')
+
+    
+    runNode(code,'',cb = (err,result) => {
+        if(result.substring(0,result.lastIndexOf("\n")) == solution){
+            return res.json({ data :  result.substring(0,result.lastIndexOf("\n"))+'  >> correct', status : 'true'})
+        }else{
+            return res.json({ data :  result.substring(0,result.lastIndexOf("\n")) +'  >> wrong', status : 'false'})
+        }
+    })
+
+})
+
+
+// --------- RUN CPP CODE --------
+
+app.get('/api/runcpp',(req,res)=>{
+    var { code, solution } = req.query;
+
+    code = code.replace('℗℗','++');
+    code = code.replace('℗','+');
+  
+    code = code.replace(/¥/g, ';');
+  
+    code = code.replace(/Ö/g, '#');
+
+    code = code.replace(/Æ/g, '\n');
+
+    solution = solution.replace(/℗/g, '\n')
+
+    runCPP(code,'',cb= (err,result)=>{
+        if(result.substring(0,result.lastIndexOf("\n")) == solution){
+            return res.json({ data :  result.substring(0,result.lastIndexOf("\n"))+'  >> correct', status : 'true'})
+        }else{
+            return res.json({ data :  result.substring(0,result.lastIndexOf("\n")) +'  >> wrong', status : 'false'})
+        }
+    })
+})
+
+
+
+
+
+// --------- RUN PYTHON CODE --------
+
+app.get('/api/runpython',(req,res)=>{
+    var { code, solution } = req.query;
 
     code = code.replace('℗℗','++');
     code = code.replace('℗','+');
 
     solution = solution.replace(/℗/g, '\n')
 
-    console.log(code)
-    console.log(solution)
-    
-    runNode(code,'',cb = (err,result) => {
+    runPython(code,'',cb= (err,result)=>{
         if(result.substring(0,result.lastIndexOf("\n")) == solution){
-            console.log('right')
-            console.log(result.substring(0,result.lastIndexOf("\n")))
             return res.json({ data :  result.substring(0,result.lastIndexOf("\n"))+'  >> correct', status : 'true'})
         }else{
-            console.log('wrong')
-            console.log(result.substring(0,result.lastIndexOf("\n")))
             return res.json({ data :  result.substring(0,result.lastIndexOf("\n")) +'  >> wrong', status : 'false'})
         }
     })
-
 })
 
 

@@ -2,7 +2,6 @@
     margin-top:0;
     height:100vh;
     width:100vw;
-    background-color: white;
 }
 
 .challengediv{
@@ -10,7 +9,8 @@
     width:100%;
     height:95%;
     position: relative;
-    background-color: beige;
+    background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHBgYGBw0HBwcGBw0PBwcNCA8SDRAWFREaFhgRHxMYHSggGBolGxMfITEhJSkrLi4uFx8zODM4NygtLjcBCgoKDQ0NDg0NDysZFRk3LS0rKystKysrKystKysrKysrKysrLSsrKy0rKysrKysrNzcrKysrKysrKysrKysrK//AABEIAKgBLAMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAACAQAFA//EABYQAQEBAAAAAAAAAAAAAAAAAAARAf/EABcBAQEBAQAAAAAAAAAAAAAAAAEABQT/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A7kSHEjWrvCNDiQ0BEhxIahiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCNCjQ0BEhxIahiHEhqFljQhGZkmZmSdqNDiRmV0hEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIagjQ4kNARIcaGp5xocSGgIkONDUEQ4kNTuxIcSMquoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ1BEhxoaAiQ4kNQRoUaGh3I0OJGVXUESHEhqCNDiQ0BEhxoagiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NECJDiQ1BGhRoagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIandiQ4kZVdQRocSGgIkOJDUMSHEhoCJDjQ1BEhxIaAjQ4kNQRIcSGoI0OJDQESHGhqCJDiQ0BEhxoagiQ4kNARocSGoIkOJDQMSHEhqCJDjQ0BEhxIagjQo0NDuRocSMqusIkOJDQEaHEhqCJDjQ0BEhxIagjQo0NARIcSGoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSKp3YkOJGXXUEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ0BEhxoagiQ4kVARIcaGoIkOJDQEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0KNDQ7kaHEjKrrCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqd2JDiRlV1BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0R3GjMy3WkSEyoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDUEaHEhoCJDjQ1BEhxIaAiQ40NQRIcSGgI0OJDUESHEhoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDU7DMzNdLMzJMzMkzRmKSJFZBIkZikjRmISJGYpI0RiGiRWKSJGYhIkVikiRmISNEYpokZiGiRmKSJuMxDRIzERI0Zio//9k=');
+    background-size: cover;
 }
 
 #challengename{
@@ -18,13 +18,16 @@
     position: absolute;
     font-size: 200%;
     margin-left:10%;
+    color:white;
+    font-weight:800;
 }
 
 #challengedescription{
-    margin-top:3%;
+    margin-top:3.5%;
     position: absolute;
     font-size: 150%;
     margin-left:10%;
+    color:white;
 }
 
 #challengeinput{
@@ -32,11 +35,11 @@
     height:40%;
     position: absolute;
     background-color:white;
-    bottom:10%;
+    bottom:15%;
     left:10%;
     font-size:150%;
     resize: none;   
-    color:black;
+    color:grey;
     border:none;
     overflow-y: scroll;
 }
@@ -52,37 +55,62 @@
 }
 
 #executebutton{
-    border:none;
     position: absolute;
-    width:5%;
-    height:40%;
-    bottom:10.3%;
-    right:24.7%;
-    background-color: black;
+    width:10%;
+    height:7%;
+    bottom:5%;
+    right:30%;
+    background-color: #a6dba7;
     color:white;
+    border-radius:100px;
+    border-color:transparent;
+    font-size:80%;
+    font-weight:900;
+    transition-duration: 1s;
+}
+
+#executebutton:hover{
+    width:15%;
+    right:27.5%;
+    height:10%;
+    bottom:3.5%;
 }
 
 #backbutton{
     position: absolute;
-    top:1.5%;
+    top:1%;
     left:1%;
+    background-color:lightgrey;
+    width:10%;
+    height:5%;
+    border-radius: 100px;
+    border-color:transparent;
+    font-size:80%;
+    font-weight:900;
+    color:grey;
+    transition-duration:1s;
+}
+
+#backbutton:hover{
+    background-color:#a6dba7;
 }
 
 .completediv{
     position: absolute;
     width:75%;
-    height:75%;
-    background-color:pink;
-    top:17%;
+    height:25%;
+    background-color:white;
+    top:20%;
     left:10%;
     display:none;
+    border-radius:50px;
 }
 
 #completetitle{
-    color:white;
+    color:black;
     font-size:250%;
     position: relative;
-    left:40%;
+    left:43%;
 
 }
 
@@ -90,5 +118,5 @@
     position: relative;
     color:grey;
     font-size:100%;
-    left:42.5%;
+    left:45.5%;
 }

@@ -16,17 +16,14 @@ export class ChallengePage extends React.Component {
     }
 
     setTimeout(()=>{
-        console.log(this.state.profile)
-        fetch(`http://localhost:4000/api/checkcompleted?uid=${this.state.profile.id}&cid=${this.state.challenge.id}`)
+        fetch(`http://${hostname}:4000/api/checkcompleted?uid=${this.state.profile.id}&cid=${this.state.challenge.id}`)
         .then(response => response.json())
         .then((data)=>{
           if(data.data[0]){
             this.setState({completed : 'true'})
-            console.log('true')
             document.getElementById('challengename').innerText += '         ✓'
           }else{
             this.setState({completed : 'false'})
-            console.log('false')
           }
         })
     },90)
@@ -42,19 +39,24 @@ export class ChallengePage extends React.Component {
     nameFromCookie = nameFromCookie.split('=');
     let username = nameFromCookie[1];
     if(username != '' || username != undefined){
-        fetch(`http://localhost:4000/api/profile?name=${username}`)
+        fetch(`http://${hostname}:4000/api/profile?name=${username}`)
         .then(response => response.json())
         .then((data)=>{
             this.setState({ profile : data.data[0]})
         })
     }else{
-      return document.location.href='http://localhost:3000/'
+      return document.location.href=`http://${hostname}:3000/`
     }
     const values = queryString.parse(this.props.location.search)
-    fetch(`http://localhost:4000/api/getquestions?id=${values.id}`)
+    fetch(`http://${hostname}:4000/api/getquestions?id=${values.id}`)
     .then(response => response.json())
     .then((data)=>{
         this.setState({ challenge : data.data[0]})
+        if(data.data[0].language == 'cpp'){
+          document.getElementById('challengeinput').value = `#include <iostream>\n\nint main(){\n\n}`
+        }else if(data.data[0].language == 'c'){
+          document.getElementById('challengeinput').value = `#include <stdio.h>\n\nint main() {\n\nreturn 0;\n}`
+        }
     })
 }
 
@@ -66,7 +68,31 @@ execute = () => {
   code = code.replace('++','℗℗');
   code = code.replace('+','℗');
 
-  fetch(`http://localhost:4000/api/runnode?code=${code}&solution=${solution}`)
+  code = code.replace(/;/g, '¥');
+
+  code = code.replace(/#/g, 'Ö');
+
+  code = code.replace(/\n/g, 'Æ');
+
+
+  var lan = '';
+
+  switch(this.state.challenge.language){
+    case 'javascript':
+      lan = 'node';
+      break;
+    case 'cpp':
+      lan = 'cpp';
+      break;
+    case 'python':
+      lan = 'python';
+      break;
+    default:
+      lan = 'null';
+      break;
+  }
+
+  fetch(`http://${hostname}:4000/api/run${lan}?code=${code}&solution=${solution}`)
   .then(response => response.json())
   .then((data)=>{
     var console_ = document.getElementById('consoleview')
@@ -76,15 +102,13 @@ execute = () => {
     if(data.status == 'true'){
       if(this.state.completed == 'false'){
         var completediv = document.getElementById('completediv').style.display = 'block'
-        fetch(`http://localhost:4000/api/addpoints?amount=${this.state.challenge.points}&name=${this.state.profile.username}`)
+        fetch(`http://${hostname}:4000/api/addpoints?amount=${this.state.challenge.points}&name=${this.state.profile.username}`)
         .then(response => response.json())
         .then((data)=>{
-          console.log(data)
         })
-        fetch(`http://localhost:4000/api/addcomplete?uid=${this.state.profile.id}&cid=${this.state.challenge.id}`)
+        fetch(`http://${hostname}:4000/api/addcomplete?uid=${this.state.profile.id}&cid=${this.state.challenge.id}`)
         .then(response => response.json())
         .then((data)=>{
-          console.log(data)
         })
       }
     }
@@ -95,7 +119,7 @@ execute = () => {
     return(
       <div className="challengePageWrapper">
           <div className = "topBar">
-          <button id='backbutton' type='submit' onClick={() => {document.location.href = 'http://localhost:3000/main'}}>Back</button>
+          <button id='backbutton' type='submit' onClick={() => {document.location.href = `http://${hostname}:3000/main`}}>Back</button>
           <div className="topbardiv">
                 <button id='settingsbutton'>settings</button>
                 <button id='profilebutton'>profile</button>
