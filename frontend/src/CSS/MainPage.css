@@ -289,3 +289,25 @@
     font-weight:900;
 
 }
+
+#messagesbutton{
+    position: absolute;
+    right:14.8%;
+    top:1.5%;
+    width:10%;
+    height:4%;
+    border-radius:100px;
+    background-color:lightgrey;
+    border:transparent;
+    font-weight: 900;
+    font-size:80%;
+    color:grey;
+    transition-duration: 1s;
+}
+
+#messagesbutton:hover{
+    width:10%;
+    height:5%;
+    right:14.8%;
+    top:1%;
+}

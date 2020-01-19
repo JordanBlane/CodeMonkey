@@ -34,7 +34,7 @@ app.get('/api/adduser', (req,res)=>{
     const { name, password } = req.query;
     var random = Math.floor(Math.random() *3);
     var avatars = ['https://i.ibb.co/72XFnLn/avatar-1.jpg',"https://i.ibb.co/BrbHGPS/avatar-2.jpg","https://i.ibb.co/Qdtcyxm/avatar-3.jpg"]
-    const ADD_USER = `INSERT INTO users(username,password,level,points,avatar,levelup) VALUES('${name}', '${password}',0,0,'${avatars[random]}',100)`
+    const ADD_USER = `INSERT INTO users(username,password,level,points,avatar,levelup,messages,friends,friendrequests,openchats) VALUES('${name}', '${password}',0,0,'${avatars[random]}',100,'"example":{"message":[""]}','','','')`
     const FIND_USER = `SELECT * FROM users WHERE username="${name}"`
 
     connection.query(FIND_USER,(err,result)=>{
@@ -228,33 +228,6 @@ app.get('/api/runpython',(req,res)=>{
 })
 
 
-
-// -------- GET MESSAGES --------
-
-app.get('/api/getmessages',(req,res)=>{
-    const { language } = req.query;
-    const GET_MESSAGES = `SELECT * FROM messages WHERE language='${language}'`
-
-    connection.query(GET_MESSAGES,(err,result)=>{
-        if(err){return console.log(err)}
-        return res.json({ data : result })
-    })
-})
-
-// -------- SEND MESSAGE ---------
-
-app.get('/api/sendmessage',(req,res)=>{
-    const { language, message, user } = req.query;
-    const SEND_MESSAGE = `INSERT INTO messages(language, message, user) VALUES('${language}','${message}','${user}')`
-
-    connection.query(SEND_MESSAGE,(err,result)=>{
-        if(err){return console.log(err)}
-
-        return res.send('sent');
-    })
-})
-
-
 // ------ CHECK COMPLETED ------
 
 
@@ -350,17 +323,6 @@ app.get('/api/getprice',(req,res)=>{
     })
 })
 
-// -------- CLEAR MESSAGES --------
-
-app.get('/api/clearmessages',(req,res)=>{
-    const CLEAR_MESSAGES = `DELETE * FROM messages`
-
-    connection.query(CLEAR_MESSAGES,(err,result)=>{
-        if(err){return console.log(err)}
-        return res.json({data:'done'})
-    })
-})
-
 // -------- GET COMPLETED CHALLENGES --------
 
 app.get('/api/getcompleted',(req,res)=>{
@@ -412,6 +374,190 @@ app.get('/api/levelup',(req,res)=>{
         }
     })
 })
+
+
+// ---------- SEND MESSAGE ------------
+
+app.get('/api/sendmessage',(req,res) => {
+    const { sendto, username, message } = req.query;
+    let object = `,"${sendto}": {"message": ["${username}℗${message}"]}`
+    let object2 = `,"${username}": {"message": ["${username}℗${message}"]}`
+    let SEND_MESSAGE = `UPDATE users SET messages = CONCAT(messages, '${object2}') WHERE username = '${sendto}'`
+    let SAVE_MESSAGE = `UPDATE users SET messages = CONCAT(messages, '${object}') WHERE username = '${username}'`
+    const selectall = `SELECT messages FROM users WHERE username = '${username}'`
+
+    connection.query(selectall,(err,result)=>{
+        let StringObject = result[0].messages;
+        let MessagesObject = false;
+        try{
+            MessagesObject = JSON.parse( "{" + StringObject + "}");
+            
+        }catch(err){
+            MessagesObject = JSON.parse(StringObject);
+        }
+        
+        if(Object.keys(MessagesObject).indexOf(sendto) > -1){
+
+            let newObject = `${username}℗${message}`
+            MessagesObject[sendto].message[MessagesObject[sendto].message.length] = newObject;
+
+            
+            let finalSave = JSON.stringify(MessagesObject);
+
+            
+            
+            SAVE_MESSAGE = `UPDATE users SET messages= '${finalSave}' WHERE username = '${username}'`
+
+            const GET_FRIEND = `SELECT messages FROM users WHERE username = '${sendto}'`;
+
+            connection.query(GET_FRIEND, (err,result)=>{
+                if(err){return console.log(err)}
+                let StringObject2 = result[0].messages;
+                let MessagesObject2 = false;
+                try{
+                    MessagesObject2 = JSON.parse( "{" + StringObject2 + "}");
+                    
+                }catch(err){
+                    MessagesObject2 = JSON.parse(StringObject2);
+                }
+                MessagesObject2[username].message[MessagesObject2[username].message.length] = newObject;
+                let finalSend = JSON.stringify(MessagesObject2);
+                finalSend = finalSend.substr(1);
+                finalSend = finalSend.substr(0,finalSend.length-1)
+                SEND_MESSAGE = `UPDATE users SET messages= '${finalSend}' WHERE username = '${sendto}'`
+                connection.query(SEND_MESSAGE, (err,result) => {
+                    if(err){return console.log(err)}
+                    connection.query(SAVE_MESSAGE, (err, results)=> {
+                        if(err){return console.log(err)}
+                        return res.json({ data : 'Success' }) 
+                    })
+                })
+            })
+
+            
+        }else{
+            connection.query(SEND_MESSAGE, (err,result) => {
+                if(err){return console.log(err)}
+                connection.query(SAVE_MESSAGE, (err, results)=> {
+                    if(err){return console.log(err)}
+                    return res.json({ data : 'Success' }) 
+                })
+            })
+        }
+
+        
+
+
+    })
+
+
+})
+
+
+
+// -------- GET MESSAGES -----------
+
+app.get('/api/getmessages',(req,res) => {
+    const { username,  to } = req.query;
+    const GET_MESSAGES = `SELECT messages FROM users WHERE username = '${username}'`
+    connection.query(GET_MESSAGES,(err,result) => {
+        if(err){return console.log(err)}
+        if(result[0] != undefined){
+
+            let StringObject = result[0].messages;
+            let MessagesObject = false;
+            try{
+                MessagesObject = JSON.parse( "{" + StringObject + "}");
+                
+            }catch(err){
+                MessagesObject = JSON.parse(StringObject);
+            }
+            if(MessagesObject[to]){
+                res.json({data : MessagesObject[to]})
+            }else{
+                res.json({data : "false"})
+        
+            }
+         }
+    })
+})
+
+// ----------- ADD FRIENDS ----------
+
+
+app.get('/api/addfriend', (req,res)=>{
+    const { friendname, username } = req.query;
+    const ADD_FRIEND = `UPDATE users SET friends = CONCAT(friends,';${friendname.trim()}') WHERE username='${username}'`
+    const GET_FRIENDS = `SELECT friends FROM users WHERE username='${username}'`
+    const SEND_FRIEND_REQUEST = `UPDATE users SET friendrequests = CONCAT(friendrequests,';${username.trim()}') WHERE username='${friendname}'`
+
+    connection.query(GET_FRIENDS,(err,result)=>{
+        if(err){return console.log(err)}
+        let friendsArr = result[0].friends.split(';');
+        for(let i=0;i<friendsArr.length;i++){
+            if(friendsArr[i] == friendname.trim()){
+                return res.json({ data : 'false'})
+            }
+        }
+        return connection.query(ADD_FRIEND,(err,result)=>{
+            if(err){return console.log(err)}
+            connection.query(SEND_FRIEND_REQUEST,(err,result)=>{
+                if(err){return console.log(err)}
+                return res.json({ data : 'added' })
+            })
+        })
+    })
+})
+
+
+// ---------- GET FRIENDS ----------
+
+app.get('/api/getfriends',(req,res)=>{
+    const { username } = req.query;
+    const GET_FRIENDS = `SELECT friends FROM users WHERE username='${username}'`
+
+    connection.query(GET_FRIENDS,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({ data : result })
+    })
+})
+
+// --------- SEARCH USERS ---------
+
+app.get('/api/searchusers',(req,res)=>{
+    const { search } = req.query;
+    const SEARCH_USERS = `SELECT * FROM users WHERE username LIKE '%${search}%'`
+
+    connection.query(SEARCH_USERS,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({ data: result })
+    })
+})
+
+
+
+//  --------- ADD OPEN CHAT ----------
+
+app.get('/api/addopenchat',(req,res)=>{
+    const { username, friendname } = req.query;
+    const ADD_CHAT = `UPDATE users SET openchats = CONCAT(openchats, ';${friendname.trim()}') WHERE username='${username}'`
+    const GET_CHATS = `SELECT openchats FROM users WHERE username='${username}'`
+
+    connection.query(GET_CHATS,(err,result)=>{
+        if(err){return console.log(err)}
+        let friendsArr = result[0].openchats.split(';')
+        for(let i=0;i<friendsArr.length;i++){
+            if(friendsArr[i] == friendname.trim()){
+                return res.json({data : 'false'})
+            }
+        }
+        return connection.query(ADD_CHAT,(err,result)=>{
+            if(err){return console.log(err)}
+            return res.json({data : 'true'})
+        })
+    })
+})
+
 
 
 

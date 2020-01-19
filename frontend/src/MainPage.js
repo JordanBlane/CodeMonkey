@@ -9,7 +9,6 @@ export class MainPage extends React.Component{
 
         this.state = {
             profile: "",
-            message:"javascript",
             image : null,
             messagesopen : false,
             pointstonextlevel : 0
@@ -18,19 +17,6 @@ export class MainPage extends React.Component{
         this.InitialiseUser.bind(this);
         this.InitialiseUser();
 
-        setInterval(()=>{
-            this.updatemessages()
-            var objDiv = document.getElementById("showmessagesdiv");
-            objDiv.scrollTop = objDiv.scrollHeight;
-        },500);
-
-        document.body.addEventListener("keydown",(e)=>{
-        if(e.keyCode == 13){
-            //enter key pressed
-            this.sendmessage();
-            document.getElementById('messageinput').value = '';
-        }
-        })
     }
 
 
@@ -60,40 +46,6 @@ export class MainPage extends React.Component{
     }
 
 
-
-    sendmessage = () => {
-        var messageinput = document.getElementById('messageinput')
-
-        fetch(`http://${hostname}:4000/api/sendmessage?language=${this.state.message}&message=${messageinput.value}&user=${this.state.profile.username}`)
-        .then(response => response.json())
-        .then((data)=>{
-        })
-    }
-
-
-    updatemessages = () => {
-        fetch(`http://${hostname}:4000/api/getmessages?language=${this.state.message}`)
-        .then(response => response.json())
-        .then((data)=>{
-            var messagediv = document.getElementById('showmessagesdiv')
-
-            messagediv.innerHTML = '';
-
-            for(let i=0;i<data.data.length;i++){
-                messagediv.innerHTML += `<div>` +data.data[i].user +' : ' +data.data[i].message +`</div>`
-            }
-        })
-    }
-
-    togglemessages = () => {
-        if(this.state.messagesopen == false){
-            document.getElementById('messagediv').style.display = 'block'
-            this.setState({messagesopen : true})
-        }else{
-            document.getElementById('messagediv').style.display = 'none'
-            this.setState({messagesopen : false})
-        }
-    }
 
 
     search = () => {
@@ -155,6 +107,7 @@ export class MainPage extends React.Component{
                 <h2 id='usernamedisplay'>{this.state.profile.username}</h2>
                 <button id='logoutbutton' onClick={()=>{document.cookie = 'username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';document.location.href=`http://${hostname}:3000/`}}>Log Out</button>
                 <button id='shopbutton' onClick={()=>{document.location.href=`http://${hostname}:3000/shop`}}>shop</button>
+                <button id='messagesbutton' onClick={()=>{document.location.href=`http://${hostname}:3000/messages`}}>Messages</button>
                 <button id='settingsbutton'>⚙</button>
         <h4 id='userslevel'>Level: {this.state.profile.level} - <span id='pointsto'>Points till next level: {this.state.pointstonextlevel}</span></h4>
                 <h4 id='userspoints'>Points: {this.state.profile.points}</h4>
