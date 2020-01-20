@@ -22,9 +22,9 @@
 }
 #avatarstitle{
     position: absolute;
-    left:46%;
+    left:48%;
     color:white;
-    font-size:250%;
+    font-size:2.5vw;
     top:-2%;
 }
 
@@ -40,8 +40,8 @@
 }
 
 #imagepreview{
-    width:150px;
-    height:150px;
+    width:0 auto;
+    height:20vh;
     position: absolute;
     left:38%;
     top:30%;
@@ -51,14 +51,16 @@
 #showpoints{
     position:absolute;
     top:2.5%;
-    right:9%;
+    right:7%;
+    font-size:0.8vw;
     color:white;
 }
 
 #imagepoints{
     position: absolute;
     top:10%;
-    left:44%;
+    font-size:0.8vw;
+    left:46%;
 }
 
 #yesbutton{
@@ -70,7 +72,7 @@
     border-color:transparent;
     background-color:#a6dba7;
     border-radius: 100px;
-    font-size:80%;
+    font-size:0.8vw;
     color:white;
     font-weight:900;
     transition-duration: 1s;
@@ -85,7 +87,7 @@
     border-color:transparent;
     background-color:lightgrey;
     border-radius:100px;
-    font-size:80%;
+    font-size:0.8vw;
     color:grey;
     font-weight:900; 
     transition-duration: 1s;
@@ -107,7 +109,8 @@
 
 #dywtb{
     position: absolute;
-    left:37%;
+    left:38%;
+    font-size:1vw;
 }
 
 #backbuttonshop{

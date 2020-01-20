@@ -106,7 +106,7 @@ export class MainPage extends React.Component{
                 <img id='avatar' onClick={()=>{document.location.href=`http://${hostname}:3000/profile`}}/>
                 <h2 id='usernamedisplay'>{this.state.profile.username}</h2>
                 <button id='logoutbutton' onClick={()=>{document.cookie = 'username= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';document.location.href=`http://${hostname}:3000/`}}>Log Out</button>
-                <button id='shopbutton' onClick={()=>{document.location.href=`http://${hostname}:3000/shop`}}>shop</button>
+                <button id='shopbutton' onClick={()=>{document.location.href=`http://${hostname}:3000/shop`}}>Avatars</button>
                 <button id='messagesbutton' onClick={()=>{document.location.href=`http://${hostname}:3000/messages`}}>Messages</button>
                 <button id='settingsbutton'>⚙</button>
         <h4 id='userslevel'>Level: {this.state.profile.level} - <span id='pointsto'>Points till next level: {this.state.pointstonextlevel}</span></h4>
@@ -121,19 +121,6 @@ export class MainPage extends React.Component{
                     </div>
                 </div>
                 <div id='mainpagediv'>
-                    <button id='togglemessages' onClick={()=>{this.togglemessages()}}>Show Messages</button>
-                    <div className='messageDiv' id='messagediv'>
-                        <div className='chooselanguage'>
-                            <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'javascript'})}}>Javascript</button>
-                            <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'c'})}}>C</button>
-                            <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'c++'})}}>C++</button>
-                            <button className='chooselanguagebutton' onClick={()=>{this.setState({message:'python'})}}>Python</button>
-                        </div>
-                        <div className='showmessagesdiv' id='showmessagesdiv'>
-                            
-                            </div>
-                        <input id='messageinput' placeholder='Send a message'/>
-                    </div>
                 </div>
             </div>
         )

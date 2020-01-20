@@ -171,28 +171,29 @@
 }
 
 #avatar{
-    width:7%;
-    height:14%;
+    display:block;
+    width:0 auto;
+    height:15%;
     border-radius:100px;
     position: absolute;
-    left:5%;
-    top:9%;
+    left:4%;
+    top:8.5%;
     transition-duration: 1s;
 }
 
 #avatar:hover{
-    width:8%;
     height:16%;
-    left:4.5%;
+    left:3.5%;
     top:8%;
 }
 
 #usernamedisplay{
     position: absolute;
-    left:15%;
-    top:9.5%;
+    left:15vw;
+    top:10vh;
     color:white;
-    font-size:200%;
+    font-size:2vw;
+    display:block;
 }
 
 
@@ -214,7 +215,7 @@
     background-color:lightgrey;
     border:transparent;
     font-weight: 900;
-    font-size:80%;
+    font-size:0.8vw;
     color:grey;
     transition-duration: 1s;
 }
@@ -236,7 +237,7 @@
     background-color:lightgrey;
     border:transparent;
     font-weight: 900;
-    font-size:80%;
+    font-size:0.8vw;
     color:grey;
     transition-duration: 1s;
 }
@@ -250,8 +251,9 @@
 
 #userspoints{
     position: absolute;
-    top:15.5%;
-    left:15.1%;
+    top:16vh;
+    left:15vw;
+    font-size:1vw;
     color:white;
 }
 
@@ -261,7 +263,7 @@
     top:0.4%;
     width:3%;
     height:5%;
-    font-size:200%;
+    font-size:2vw;
     background:transparent;
     border:none;
     color:black;
@@ -269,23 +271,24 @@
 
 #userslevel{
     position: absolute;
-    top:18.5%;
-    left:15.1%;
+    top:18.6vh;
+    left:15vw;
+    font-size:1vw;
     color:white;
 }
 
 #levelupbutton{
     display:inline-block;
     position: absolute;
-    top:21%;
-    left:21%;
-    width:6%;
-    height:4%;
+    top:21vh;
+    left:21vw;
+    width:7vw;
+    height:3vh;
     background-color:lightgrey;
     color:grey;
     border-radius: 100px;
     border-color:transparent;
-    font-size:80%;
+    font-size:1vw;
     font-weight:900;
 
 }
@@ -300,7 +303,7 @@
     background-color:lightgrey;
     border:transparent;
     font-weight: 900;
-    font-size:80%;
+    font-size:0.8vw;
     color:grey;
     transition-duration: 1s;
 }
@@ -311,3 +314,107 @@
     right:14.8%;
     top:1%;
 }
+
+#friendrequestdiv{
+    display:none;
+    position: absolute;
+    width:100%;
+    height:100%;
+    background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHBgYGBw0HBwcGBw0PBwcNCA8SDRAWFREaFhgRHxMYHSggGBolGxMfITEhJSkrLi4uFx8zODM4NygtLjcBCgoKDQ0NDg0NDysZFRk3LS0rKystKysrKystKysrKysrKysrLSsrKy0rKysrKysrNzcrKysrKysrKysrKysrK//AABEIAKgBLAMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAACAQAFA//EABYQAQEBAAAAAAAAAAAAAAAAAAARAf/EABcBAQEBAQAAAAAAAAAAAAAAAAEABQT/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8A7kSHEjWrvCNDiQ0BEhxIahiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCNCjQ0BEhxIahiHEhqFljQhGZkmZmSdqNDiRmV0hEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIagjQ4kNARIcaGp5xocSGgIkONDUEQ4kNTuxIcSMquoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ1BEhxoaAiQ4kNQRoUaGh3I0OJGVXUESHEhqCNDiQ0BEhxoagiQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NECJDiQ1BGhRoagiQ4kNARocSGoIkONDQESHEhqCJDjQ0BEhxIandiQ4kZVdQRocSGgIkOJDUMSHEhoCJDjQ1BEhxIaAjQ4kNQRIcSGoI0OJDQESHGhqCJDiQ0BEhxoagiQ4kNARocSGoIkOJDQMSHEhqCJDjQ0BEhxIagjQo0NDuRocSMqusIkOJDQEaHEhqCJDjQ0BEhxIagjQo0NARIcSGoI0OJDQESHEhqGJDiQ0BEhxoagiQ4kNARocSGoIkOJDQEaHEhqCJDjQ0BEhxIagiQ40NARIcSKp3YkOJGXXUEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0OJDQESHEhqCNDiQ0BEhxoagiQ4kVARIcaGoIkOJDQEaHEhqCJDiQ0DEhxIagiQ40NARIcSGoI0KNDQ7kaHEjKrrCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQEaHEhqCJDiQ0BGhxIagiQ40NARIcSGoIkONDQESHEhqd2JDiRlV1BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0BEhxIagjQ4kNARIcaGoIkOJDQESHGhqCJDiQ0BGhxIagiQ4kNAxIcSGoIkONDQESHEhqCNDiQ0R3GjMy3WkSEyoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDUEaHEhoCJDjQ1BEhxIaAiQ40NQRIcSGgI0OJDUESHEhoCNDiQ1BEhxoaAiQ4kNQRIcaGgIkOJDU7DMzNdLMzJMzMkzRmKSJFZBIkZikjRmISJGYpI0RiGiRWKSJGYhIkVikiRmISNEYpokZiGiRmKSJuMxDRIzERI0Zio//9k=');
+    background-size: cover;
+    z-index:12;
+}
+
+#friendreqresultdiv{
+    position: relative;
+    width:80%;
+    left:10%;
+    height:15%;
+    background-color:white
+}
+
+#friendreqavatar{
+    position: absolute;
+    width:10%;
+}
+
+
+/* MEDIA QUERY */
+ 
+/* @media only screen and (max-width:1565px){
+    #levelupbutton{
+        left:20%;
+        width:5%;
+        height:3%;
+        top:19.2%;
+    }
+    #usernamedisplay{
+        top:7%;
+    }
+    #userspoints{
+        top:13%;
+        left:15%;
+    }
+    #userslevel{
+        top:17%;
+        left:15%;
+    }
+}
+
+@media only screen and (max-width:1460px){
+    #levelupbutton{
+        left:20.5%;
+        width:6%;
+        height:3%;
+        top:19.5%;
+    }
+}
+
+@media only screen and (max-width:1230px){
+    #questionLanguage{
+        top:29%;
+        font-size:118%;
+    }
+
+    #questionButton{
+        top:30%;
+        right:10%;
+        width:21%;
+        height:40%;
+    }
+    
+    #questionButton:hover{
+        width:25%;
+        right:7.5%;
+        height:50%;
+        top:25%;
+    }
+
+
+    #levelupbutton{
+        left:21.2%;
+        width:6.5%;
+        height:3%;
+        top:19.9%;
+    }
+}
+
+@media only screen and (max-width:1160px){
+    #levelupbutton{
+        left:21.5%;
+        width:6.6%;
+        height:3%;
+        top:19.9%;
+        font-size:75%;
+    }
+}
+
+    @media only screen and (max-width:960px){
+        #levelupbutton{
+            left:23%;
+            width:8%;
+            height:3%;
+            top:20.5%;
+        }
+} */
+

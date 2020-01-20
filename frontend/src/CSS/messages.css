@@ -21,7 +21,7 @@
     border-radius: 100px;
     background-color: lightgrey;
     color:grey;
-    font-size:80%;
+    font-size:0.8vw;
     font-weight:900;
     top:1%;
     left:1%
@@ -53,13 +53,14 @@
 }
 
 #usersavatarbar{
+    display:block;
     position: absolute;
     z-index: 10;
     border-radius: 100px;
-    width:5%;
-    height:10%;
-    left:14%;
-    top:1%
+    width:0 auto;
+    height:10vh;
+    left:14vw;
+    top:1vh;
 }
 
 #messagecontainer{
@@ -71,28 +72,31 @@
 }
 
 #messageavatar{
+    display:block;
     position: absolute;
-    width:5%;
-    height:80%;
+    width:0 auto;
+    height:6vh;
     border-radius:100px;
-    top:10%;
-    left:1%;
+    top:1vh;
+    left:1vw;
 }
 
 .messageName{
-    display:'block';
+    display:block;
     position: absolute;
-    top:5%;
-    left:8%;
+    top:1vh;
+    left:5vw;
     color:black;
-    font-size:100%;
+    font-size:1vw;
     font-weight:800;
 }
 
 .messageMessage{
+    display:block;
     position: relative;
-    top:30%;
-    left:23%;
+    top:3vh;
+    left:10vw;
+    font-size:1vw;
     color:grey
 }
 
@@ -177,41 +181,43 @@
 }
 
 #friendresultdiv{
-    width:100%;
-    height:10%;
+    width:50vw;
+    height:10vh;
     position:relative;
     margin-bottom:10px;
 }
 
 #friendresultavatar{
+    display:block;
     position: absolute;
-    top:10%;
-    left:2%;
-    width:7%;
-    height:80%;
+    top:1vh;
+    left:1vw;
+    width:0 auto;
+    height:8vh;
     border-radius: 100px;;
 }
 
 #friendresultname{
+    display:block;
     position: absolute;
-    top:-20%;
+    top:0 auto;
     color:grey;
-    left:13%;
-    font-size:130%;
+    left:15%;
+    font-size:1vw;
     font-weight:800;
 }
 
 #friendresultaddbutton{
     position: absolute;
-    right:20%;
-    top:25%;
-    width:20%;
-    height:50%;
+    right:3vw;
+    top:2vh;
+    width:10vw;
+    height:5vh;
     background-color:lightgrey;
     color:grey;
     border-color:transparent;
     border-radius: 100px;
-    font-size:80%;
+    font-size:0.8vw;
     font-weight:900;
 }
 
@@ -219,14 +225,14 @@
 #addfriendbutton{
     position: absolute;
     right:10%;
-    top:5%;
+    top:5vh;
     width:15%;
     height:5%;
     background-color:lightgrey;
     color:grey;
     border-color:transparent;
     border-radius: 100px;
-    font-size:80%;
+    font-size:0.8vw;
     font-weight:900;
 }
 
@@ -242,14 +248,16 @@
 
 
 #frienddiv{
+    display:block;
     position: relative;
     width:100%;
-    height:10%;
+    height:10vh;
     margin-bottom:10px;
 }
 
 #friendsshowavatar{
-    width:6%;
+    display:block;
+    width:0 auto;
     height:80%;
     border-radius:100px;
     position: absolute;
@@ -259,22 +267,23 @@
 
 #showfriendname{
     position: absolute;
-    left:10%;
-    top:-10%;
+    left:12%;
+    top:7%;
     color:grey;
+    font-size:1.2vw;
 }
 
 #friendchatbutton{
     position: absolute;
-    right:20%;
-    top:40%;
-    width:20%;
-    height:40%;
+    right:3%;
+    top:38%;
+    width: 10vw;
+    height:3vh;
     background-color:lightgrey;
     color:grey;
     border-color:transparent;
     border-radius:100px;
-    font-size:80%;
+    font-size:0.8vw;
     font-weight:900;
 }
 
@@ -288,7 +297,7 @@
     color:grey;
     border-color:transparent;
     border-radius: 100px;
-    font-size:80%;
+    font-size:0.8vw;
     font-weight:900;
 
 }
@@ -305,15 +314,67 @@
     border-radius: 100px;
     border-color:transparent;
     margin-bottom:15px;
-    font-size:80%;
+    font-size:0.8vw;
     font-weight:900;
 }
 
 #openchatavatar{
+    display:block;
     position: absolute;
-    left:5%;;
-    width:17%;
-    height:80%;
+    left:5%;
+    width:0 auto;
+    height:5vh;
     top:10%;
     border-radius:100px;
+}
+
+#showfriendrequests{
+    position: absolute;
+    width:60%;
+    height:70%;
+    background-color: white;
+    left:20%;
+    top:15%;
+    border-radius:20px;
+}
+
+#friendreqresultdiv{
+    position: relative;
+    left:0;
+    top:0;
+    width:95%;
+    left:2.5%;
+    height:15%;
+    margin-bottom:10px;
+}
+
+#friendreqresultavatar{
+    position: absolute;
+    width:0 auto;
+    height:8vh;
+    border-radius: 100px;
+    top:13.5%;
+    left:1%;
+}
+
+#friendreqresultname{
+    position: absolute;
+    left:10%;
+    top:20%;
+    font-size:1vw;
+    color:grey;
+}
+
+#friendreqresultaddbutton{
+    position: absolute;
+    right:3%;
+    top:35%;
+    width:10vw;
+    height:3vh;
+    border-radius:100px;
+    background-color:lightgrey;
+    color:grey;
+    border-color:transparent;
+    font-size:0.8vw;
+    font-weight:900;
 }

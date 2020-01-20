@@ -121,8 +121,6 @@ execute = () => {
           <div className = "topBar">
           <button id='backbutton' type='submit' onClick={() => {document.location.href = `http://${hostname}:3000/main`}}>Back</button>
           <div className="topbardiv">
-                <button id='settingsbutton'>settings</button>
-                <button id='profilebutton'>profile</button>
                 <h4 id='userslevel'>{this.state.profile.level}</h4>
                 <h4 id='userspoints'>points: {this.state.profile.points}</h4>
             </div>

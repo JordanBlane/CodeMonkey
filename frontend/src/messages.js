@@ -15,6 +15,7 @@ export class MessagePage extends React.Component {
         frienddiv : false,
         openchats : [],
         messagelength : 0,
+        friendrequestdiv : false
 
     }
 
@@ -48,6 +49,7 @@ export class MessagePage extends React.Component {
             this.setState({ profile : data.data[0]})
             document.getElementById('usersavatarbar').src=`${data.data[0].avatar}`
             this.getmessage()
+            this.addfriendrequest();
             let openchats = this.state.profile.openchats.split(';')
             console.log(openchats)
             console.log(this.state.openchats)
@@ -127,6 +129,47 @@ export class MessagePage extends React.Component {
             document.getElementById('addfrienddiv').style.display = 'none'
             this.setState({ frienddiv : false})
         }
+    }
+
+    friendrequestdiv = () => {
+        if(this.state.friendrequestdiv == false){
+            document.getElementById('friendrequestdiv').style.display = 'block'
+            this.setState({friendrequestdiv : true})
+        }else{
+            document.getElementById('friendrequestdiv').style.display = 'none'
+            this.setState({friendrequestdiv : false})
+        }
+    }
+
+    addfriendrequest = () => {
+        fetch(`http://${hostname}:4000/api/getfriendrequests?username=${this.state.profile.username}`)
+        .then(response => response.json())
+        .then((data)=>{
+            var requests = data.data[0].friendrequests.split(';')
+            var div = document.getElementById('showfriendrequests')
+            console.log(requests)
+            for(let i=1;i<requests.length;i++){
+                div.innerHTML += `<div id="friendreqresultdiv"><img id="friendreqresultavatar"'/><h4 id="friendreqresultname">${requests[i]}</h4> <button class="friendreqbutton" id="friendreqresultaddbutton">Add</button></div>`
+            }
+            for(let i=0;i<document.getElementsByClassName('friendreqbutton').length;i++){
+                fetch(`http://${hostname}:4000/api/profile?name=${requests[i+1]}`)
+                .then(response => response.json())
+                .then((data)=>{
+                    console.log(data)
+                    console.log(document.getElementsByClassName('friendreqbutton')[i].parentNode.childNodes[0].src=`${data.data[0].avatar}`)
+                })
+            }
+            for(let i=0;i<document.getElementsByClassName('friendreqbutton').length;i++){
+                document.getElementsByClassName('friendreqbutton')[i].addEventListener('click',(e)=>{
+                    this.addfriend(`${requests[i+1]}`)
+                    fetch(`http://${hostname}:4000/api/removefriendrequest?username=${this.state.profile.username}&friendname=${requests[i+1]}`)
+                    .then(response => response.json())
+                    .then((data)=>{
+
+                    })
+                })
+            }
+        })
     }
 
     refreshpopup = () => {
@@ -259,10 +302,33 @@ export class MessagePage extends React.Component {
     }
 
     sendmessage = () => {
-        console.log('sending')
         let sendto = this.state.currentMessage
         let message = document.getElementById('messageinput').value;
         if(sendto !== ''){
+            message = message.
+            replace(/&/g,'%26').
+            replace(/</g,'%3C').
+            replace(/>/g,'%3E').
+            replace(/=/g,"%3D").
+            replace(/'/g,"").
+            replace(/"/g,"").
+            replace(/#/g,"%23").
+            replace(/!/g,"%21").
+            replace(/£/g,"%A3");
+            let words = message.split(" ");
+            words.forEach((word,i) =>{
+              if(word.endsWith('.jpg') || word.endsWith('.png') || word.endsWith('.jpeg') || word.endsWith('.gif')){
+                let url = word;
+                words[i] = `<img src=${url} width=auto height=70>`; 
+              }
+              if(word.indexOf('www.youtube.com/watch') > -1){ 
+                let Link = `http://www.youtube.com/embed/${words[i].slice(words[i].lastIndexOf('%3D')+3, word.length)}`
+                let videoTemplate = `<iframe  width=300 height=70 src=${Link} frameborder=0 allow=accelerometer;autoplay;gyroscope;picture-in-picture allowfullscreen;SameSite=none;></iframe>`
+                words[i] = videoTemplate;
+               
+            }
+            })
+            message = words.join(" ");
             fetch(`http://${hostname}:4000/api/sendmessage?sendto=${sendto}&username=${this.state.profile.username}&message=${message}`)
             .then(response => response.json())
             .then((data)=>{
@@ -364,13 +430,21 @@ export class MessagePage extends React.Component {
                 </div>
             </div>
 
+            <div id='friendrequestdiv'>
+            <button id='closepopup' onClick={()=>{this.friendrequestdiv();this.refreshpopup()}}>X</button>
+            <div id='showfriendrequests'>
+
+            </div>
+
+            </div>
+
           <div id='popupdiv'>
             <button id='closepopup' onClick={()=>{this.showpopup();this.refreshopenchats()}}>X</button>
             <div id='showfriendsdiv'>
 
             </div>
             <button id='addfriendbutton' onClick={()=>{this.frienddiv()}}>Add Friend</button>
-            <button id='friendrequestbutton' >Friend Requests</button>
+            <button id='friendrequestbutton' onClick={()=>{this.friendrequestdiv()}}>Friend Requests</button>
           </div>
       </div>
     )

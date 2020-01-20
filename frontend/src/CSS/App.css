@@ -26,6 +26,7 @@
   background-color:lightgrey;
   border:transparent;
   left:55%;
+  font-size:0.8vw;
   transition-duration: 1s;
 }
 
@@ -39,6 +40,7 @@
   background-color:lightgrey;
   border:transparent;
   left:55%;
+  font-size:0.8vw;
   transition-duration: 1s;
 }
 
@@ -53,7 +55,7 @@
   top:65%;
   color:white;
   font-weight: 900;
-  font-size:80%;
+  font-size:0.8vw;
   transition-duration: 1s;
 }
 
@@ -69,13 +71,14 @@
   font-weight: 900;
   font-size:80%;
   color:grey;
+  font-size:0.8vw;
   transition-duration: 1s;
 }
 
 #logintext{
   position: absolute;
-  left:61%;
-  font-size:120%;
+  left:62%;
+  font-size:1.2vw;
   top:20%;
 }
 

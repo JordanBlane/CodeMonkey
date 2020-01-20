@@ -16,7 +16,7 @@
 #challengename{
     margin-top:1%;
     position: absolute;
-    font-size: 200%;
+    font-size: 2vw;
     margin-left:10%;
     color:white;
     font-weight:800;
@@ -25,7 +25,7 @@
 #challengedescription{
     margin-top:3.5%;
     position: absolute;
-    font-size: 150%;
+    font-size: 1.5vw;
     margin-left:10%;
     color:white;
 }
@@ -64,7 +64,7 @@
     color:white;
     border-radius:100px;
     border-color:transparent;
-    font-size:80%;
+    font-size:0.8vw;
     font-weight:900;
     transition-duration: 1s;
 }
@@ -108,15 +108,100 @@
 
 #completetitle{
     color:black;
-    font-size:250%;
+    font-size:2.5vw;
     position: relative;
-    left:43%;
+    left:30vw;
 
 }
 
 #completedescription{
     position: relative;
     color:grey;
-    font-size:100%;
-    left:45.5%;
+    font-size:2vw;
+    left:28vw;
 }
+
+
+/* MEDIA QUERY
+@media only screen and (max-width:1000px){
+    #challengedescription{
+        top:2%;
+    }
+    #executebutton{
+        height:5%;
+    }
+    #executebutton:hover{
+        width:15%;
+        right:27.5%;
+        height:7%;
+        bottom:3.5%;
+    }
+    
+    #completetitle{
+        left:40%;
+    }
+    
+    #completedescription{
+        left:44%;
+    }
+}
+
+@media only screen and (max-width:650px){
+    #executebutton{
+        width:20%;
+        right:50%;
+
+    }
+
+    #executebutton:hover{
+    width:15%;
+    right:52%;
+    height:7%;
+    bottom:3.5%;
+    }
+    #backbutton{
+        width:12%;
+    }
+}
+
+
+@media only screen and (max-width:400px){
+
+    #challengedescription{
+        margin-top:9%;
+    }
+    #executebutton{
+        width:20%;
+        right:40%;
+        top:90%;
+    }
+    #executebutton:hover{
+        width:18%;
+        right:41%;
+        height:7%;
+        bottom:3.5%;
+        }
+
+    #backbutton{
+        width:18%;
+    }
+    .completediv{
+        left:12%
+    }
+    #completetitle{
+        left:17.5%;
+    }
+    #completedescription{
+        left:26%;
+    }
+    #consoleview{
+        height:25%;
+        right:20%;
+        width:60%;
+        top:20%;
+    }
+    #challengeinput{
+        left:20%;
+        top:48%;
+    }
+} */

@@ -10,7 +10,7 @@ function get_connection(){
     return mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: '26265071',
+        password: 'Admin123',
         database: 'code',
         charset : 'utf8mb4'
     })
@@ -37,28 +37,33 @@ app.get('/api/adduser', (req,res)=>{
     const ADD_USER = `INSERT INTO users(username,password,level,points,avatar,levelup,messages,friends,friendrequests,openchats) VALUES('${name}', '${password}',0,0,'${avatars[random]}',100,'"example":{"message":[""]}','','','')`
     const FIND_USER = `SELECT * FROM users WHERE username="${name}"`
 
-    connection.query(FIND_USER,(err,result)=>{
-        if(err){return console.log(err)}
+    if(name != '' || undefined && password != '' || undefined){
 
-        if(!result[0]){
-            connection.query(ADD_USER,(err,results)=>{
-                if(err){return console.log(err)}
-                const GET_USER_OBJECT = `SELECT * FROM users WHERE username='${name}' AND password='${password}'`
+        connection.query(FIND_USER,(err,result)=>{
+            if(err){return console.log(err)}
 
-                connection.query(GET_USER_OBJECT,(err,ress)=>{
+            if(!result[0]){
+                connection.query(ADD_USER,(err,results)=>{
                     if(err){return console.log(err)}
-                    const GET_AVATARS = `INSERT INTO unlockedavatar(uid,avatar) VALUES('${ress[0].id}','${avatars[random]}')`
-                    connection.query(GET_AVATARS,(err,resss)=>{
+                    const GET_USER_OBJECT = `SELECT * FROM users WHERE username='${name}' AND password='${password}'`
+
+                    connection.query(GET_USER_OBJECT,(err,ress)=>{
                         if(err){return console.log(err)}
-                        console.log('new user : ' +ress[0].username)
-                        return res.json({ data : 'user added'});
+                        const GET_AVATARS = `INSERT INTO unlockedavatar(uid,avatar) VALUES('${ress[0].id}','${avatars[random]}')`
+                        connection.query(GET_AVATARS,(err,resss)=>{
+                            if(err){return console.log(err)}
+                            console.log('new user : ' +ress[0].username)
+                            return res.json({ data : 'user added'});
+                        })
                     })
                 })
-            })
-        }else{
-            return res.json({ data : 'user exsists' });
-        }
-    })
+            }else{
+                return res.json({ data : 'user exsists' });
+            }
+        })
+    }else{
+        return res.json({data : 'no input'})
+    }
 
 
 })
@@ -345,8 +350,6 @@ app.get('/api/levelup',(req,res)=>{
 
     connection.query(GET_OBJ,(err,result)=>{
         if(err){return console.log(err)}
-        console.log(result[0].levelup)
-        console.log(result[0].points)
         if(result[0].points >= result[0].levelup){
             var level = result[0].level
             var levelup = result[0].levelup
@@ -365,12 +368,10 @@ app.get('/api/levelup',(req,res)=>{
 
                     connection.query(SET_LEVELUP,(err,resss)=>{
                         if(err){return console.log(err)}
-                        console.log('done');
                     })
                 })
             })
         }else{
-            console.log('cant level up')
         }
     })
 })
@@ -554,6 +555,46 @@ app.get('/api/addopenchat',(req,res)=>{
         return connection.query(ADD_CHAT,(err,result)=>{
             if(err){return console.log(err)}
             return res.json({data : 'true'})
+        })
+    })
+})
+
+
+// -------- GET FRIEND REQUESTS ----------
+
+app.get('/api/getfriendrequests',(req,res)=>{
+    const { username } = req.query;
+    const GET_REQ = `SELECT friendrequests FROM users WHERE username='${username}'`
+    
+    connection.query(GET_REQ,(err,result)=>{
+        if(err){return console.log(err)}
+        return res.json({data : result})
+    })
+})
+
+
+// -------  REMOVE FROM FRIEND REQUESTS ---------
+
+app.get('/api/removefriendrequest',(req,res)=>{
+    const { username, friendname} = req.query;
+    const SELECT_ALL = `SELECT friendrequests FROM users WHERE username='${username}'`
+
+    connection.query(SELECT_ALL,(err,result)=>{
+        if(err){return console.log(err)}
+        var fr = result[0].friendrequests.split(';')
+        for(let i=1;i<fr.length;i++){
+            if(fr[i] == friendname){
+                fr[i] = ''
+            }
+        }
+        fr = fr.join(';')
+        if(fr == ';'){
+            fr = ''
+        }
+        const REMOVE_USER = `UPDATE users SET friendrequests='${fr}' WHERE username='${username}'`
+
+        connection.query(REMOVE_USER,(err,result)=>{
+            if(err){return console.log(err)}
         })
     })
 })

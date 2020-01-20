@@ -9,7 +9,7 @@
     position: absolute;
     top:10%;
     left:25%;
-    font-size:300%;
+    font-size:3vw;
     color:white;
 }
 
@@ -17,8 +17,8 @@
     position: absolute;
     top:10%;
     left:10%;
-    width:150px;
-    height:150px;
+    width:0 auto;
+    height:20vh;
     border-radius:100px;
 }
 
@@ -35,7 +35,7 @@
 #completedchallengestitle{
     position: absolute;
     left:38%;
-    font-size:150%;
+    font-size:1.5vw;
     top:-3%;
 }
 
@@ -69,7 +69,7 @@
     position: absolute;
     left:10%;
     top:-10%;
-    font-size:120%;
+    font-size:1.2vw;
 }
 
 #challengeLanguage{
@@ -77,6 +77,7 @@
     position: absolute;
     left:10%;
     top:40%;
+    font-size:1vw;
 }
 
 #backprofile{
@@ -89,7 +90,7 @@
     border-radius:100px;
     background-color:lightgrey;
     color:grey;
-    font-size:80%;
+    font-size:0.8vw;
     font-weight: 900;
     transition-duration: 1s;
 }
