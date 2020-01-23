@@ -10,7 +10,7 @@ function get_connection(){
     return mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: 'Admin123',
+        password: '26265071',
         database: 'code',
         charset : 'utf8mb4'
     })
@@ -600,6 +600,52 @@ app.get('/api/removefriendrequest',(req,res)=>{
 })
 
 
+// -------- REMOVE OPEN CHAT ----------
+
+app.get('/api/removeopenchat',(req,res)=>{
+    const { username, friendname } = req.query;
+    const SELECT_CHATS = `SELECT openchats FROM users WHERE username='${username}'`
+
+    connection.query(SELECT_CHATS,(err,result)=>{
+        if(err){return console.log(err)}
+        let chats = result[0].openchats.split(';')
+        console.log(chats)
+        for(let i=1;i<chats.length;i++){
+            console.log(chats[i])
+            console.log(friendname)
+            if(chats[i] == friendname){
+                chats[i] = ''
+            }
+        }
+        chats = chats.join(';')
+        if(chats == ';'){
+            chats = ''
+        }
+        const REMOVE_CHAT = `UPDATE users SET openchats='${chats}' WHERE username='${username}'`
+        
+        connection.query(REMOVE_CHAT,(err,result)=>{
+            if(err){return console.log(err)}
+        })
+    })
+})
+
+
+// ---------- ADD GROUP CHAT ----------
+
+
+app.get('/api/addgroupchat',(req,res)=>{
+    const { users, name, username } = req.query;
+    const ADD_NEW_GROUP_CHAT = `INSERT INTO groupchats(messages,users,name) VALUES('"messages":[]','${users}','${name}')`
+
+    var friends = users.split(';')
+    for(let i=1;i<friends.length;i++){
+        const ADD_TO_FRIEND = `UPDATE users SET openchats= CONCAT(openchats, ';${name}') WHERE username='${friends[i]}'`
+
+        connection.query(ADD_TO_FRIEND,(err,result)=>{
+            if(err){return console.log(err)}
+        })
+    }
+})
 
 
 

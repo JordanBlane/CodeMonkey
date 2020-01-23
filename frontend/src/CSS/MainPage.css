@@ -281,14 +281,14 @@
     display:inline-block;
     position: absolute;
     top:21vh;
-    left:21vw;
-    width:7vw;
+    left:22vw;
+    width:5vw;
     height:3vh;
     background-color:lightgrey;
     color:grey;
     border-radius: 100px;
     border-color:transparent;
-    font-size:1vw;
+    font-size:0.8vw;
     font-weight:900;
 
 }
