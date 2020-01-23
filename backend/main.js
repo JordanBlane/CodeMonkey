@@ -10,7 +10,7 @@ function get_connection(){
     return mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: '26265071',
+        password: 'Admin123',
         database: 'code',
         charset : 'utf8mb4'
     })
@@ -34,7 +34,7 @@ app.get('/api/adduser', (req,res)=>{
     const { name, password } = req.query;
     var random = Math.floor(Math.random() *3);
     var avatars = ['https://i.ibb.co/72XFnLn/avatar-1.jpg',"https://i.ibb.co/BrbHGPS/avatar-2.jpg","https://i.ibb.co/Qdtcyxm/avatar-3.jpg"]
-    const ADD_USER = `INSERT INTO users(username,password,level,points,avatar,levelup,messages,friends,friendrequests,openchats) VALUES('${name}', '${password}',0,0,'${avatars[random]}',100,'"example":{"message":[""]}','','','')`
+    const ADD_USER = `INSERT INTO users(username,password,level,points,avatar,levelup,messages,friends,friendrequests,openchats,groupchats) VALUES('${name}', '${password}',0,0,'${avatars[random]}',100,'"example":{"message":[""]}','','','','')`
     const FIND_USER = `SELECT * FROM users WHERE username="${name}"`
 
     if(name != '' || undefined && password != '' || undefined){
@@ -446,9 +446,6 @@ app.get('/api/sendmessage',(req,res) => {
             })
         }
 
-        
-
-
     })
 
 
@@ -614,13 +611,14 @@ app.get('/api/removeopenchat',(req,res)=>{
             console.log(chats[i])
             console.log(friendname)
             if(chats[i] == friendname){
-                chats[i] = ''
+                chats.splice(i,1)
             }
         }
         chats = chats.join(';')
         if(chats == ';'){
             chats = ''
         }
+        console.log(chats)
         const REMOVE_CHAT = `UPDATE users SET openchats='${chats}' WHERE username='${username}'`
         
         connection.query(REMOVE_CHAT,(err,result)=>{
@@ -635,16 +633,133 @@ app.get('/api/removeopenchat',(req,res)=>{
 
 app.get('/api/addgroupchat',(req,res)=>{
     const { users, name, username } = req.query;
-    const ADD_NEW_GROUP_CHAT = `INSERT INTO groupchats(messages,users,name) VALUES('"messages":[]','${users}','${name}')`
+    const ADD_NEW_GROUP_CHAT = `INSERT INTO groupchats(messages,users,name) VALUES('"messages":{"message":["Server℗Group made by ${username}"]}','${users}','${name}')`
 
     var friends = users.split(';')
+    var ADD_TO_FRIEND = ''
+    var CHECK_FRIENDS = ''
     for(let i=1;i<friends.length;i++){
-        const ADD_TO_FRIEND = `UPDATE users SET openchats= CONCAT(openchats, ';${name}') WHERE username='${friends[i]}'`
-
-        connection.query(ADD_TO_FRIEND,(err,result)=>{
+        CHECK_FRIENDS = `SELECT groupchats FROM users WHERE username='${friends[i]}'`
+        connection.query(CHECK_FRIENDS,(err,result)=>{
             if(err){return console.log(err)}
+            var ress = result[0].groupchats.split(';')
+            for(let i=1;i<ress.length;i++){
+                if(ress[i] == name){
+                    return;
+                }
+            }
+            ADD_TO_FRIEND = `UPDATE users SET groupchats= CONCAT(groupchats,';${name}') WHERE username='${friends[i]}'`
+            connection.query(ADD_TO_FRIEND,(err,result)=>{
+                if(err){return console.log(err)}
+            })
+            if(i == friends.length-1){
+                connection.query(ADD_NEW_GROUP_CHAT,(err,result)=>{
+                    if(err){return console.log(err)}
+                })
+            }
         })
     }
+    return res.json({data : 'done'})
+})
+
+
+// --------- GET GROUP MESSAGES ----------
+
+app.get('/api/getgroupmessages',(req,res)=>{
+    const { name } = req.query;
+    const SELECT_MESSAGES = `SELECT messages FROM groupchats WHERE name='${name}'`
+
+    connection.query(SELECT_MESSAGES,(err,result)=>{
+        if(err){return console.log(err)}
+        if(result[0] != undefined){
+
+            let StringObject = result[0].messages;
+            let MessagesObject = false;
+            try{
+                MessagesObject = JSON.parse( "{" + StringObject + "}");
+                
+            }catch(err){
+                MessagesObject = JSON.parse(StringObject);
+            }
+            return res.json({data : MessagesObject})
+         }
+    })
+})
+
+
+
+// ---------- SEND MESSAGE TO GROUP ----------
+
+app.get('/api/sendmessagetogroup',(req,res)=>{
+    const { group, username, message } = req.query;
+    const GET_MESSAGES = `SELECT messages FROM groupchats WHERE name='${group}'`
+
+    var finalsend = '';
+
+    connection.query(GET_MESSAGES,(err,result)=>{
+        if(err){return console.log(err)}
+        let StringObject = result[0].messages
+        let MessagesObject = false;
+        try{
+            MessagesObject = JSON.parse( "{" + StringObject + "}");
+            
+        }catch(err){
+            MessagesObject = JSON.parse(StringObject);
+        }
+        console.log(MessagesObject)
+        let newObject = `${username}℗${message}`
+        console.log('aa')
+        MessagesObject.messages.message[MessagesObject.messages.message.length] = newObject;
+        let finalSave = JSON.stringify(MessagesObject);
+        console.log(finalSave)
+        var SEND_MESSAGE = `UPDATE groupchats SET messages='${finalSave}' WHERE name='${group}'`
+        connection.query(SEND_MESSAGE,(err,result)=>{
+            if(err){return console.log(err)}
+            return res.json({data : finalSave})
+        })
+    })
+
+})
+
+
+// -------- LEAVE GC -------
+
+app.get('/api/leavegroupchat',(req,res)=>{
+    const { name, group } = req.query;
+    const GET_USERS_FROM_GROUP = `SELECT users FROM groupchats WHERE name='${group}'`
+
+    connection.query(GET_USERS_FROM_GROUP,(err,result)=>{
+        if(err){return console.log(err)}
+        var users = result[0].users.split(';')
+        for(let i=1;i<users.length;i++){
+            if(users[i] == name){
+                users.splice(i,1)
+            }
+        }
+        users = users.join(';')
+        var UPDATE_USERS = `UPDATE groupchats SET users='${users}' WHERE name='${group}'`
+
+        connection.query(UPDATE_USERS,(err,result)=>{
+            if(err){return console.log(err)}
+            var SELECT_GC = `SELECT groupchats FROM users WHERE username='${name}'`
+            connection.query(SELECT_GC,(err,result)=>{
+                if(err){return console.log(err)}
+                let groupchats = result[0].groupchats.split(';')
+                for(let i=1;i<groupchats.length;i++){
+                    if(groupchats[i] == group){
+                        groupchats.splice(i,1)
+                    }
+                }
+                groupchats = groupchats.join(';')
+                var UPDATE_GROUPCHATS = `UPDATE users SET groupchats='${groupchats}' WHERE username='${name}'`
+
+                connection.query(UPDATE_GROUPCHATS,(err,result)=>{
+                    if(err){return console.log(err)}
+                    console.log(result)
+                })
+            })
+        })
+    })
 })
 
 

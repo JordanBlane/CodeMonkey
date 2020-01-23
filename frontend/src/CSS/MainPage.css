@@ -1,4 +1,6 @@
-
+*:focus {
+    outline: none;
+}
 
 .mainPageWrapper{
     height:100vh;

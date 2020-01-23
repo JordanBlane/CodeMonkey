@@ -17,7 +17,8 @@ export class MessagePage extends React.Component {
         messagelength : 0,
         friendrequestdiv : false,
         gc : false,
-        group : []
+        group : [],
+        type : ''
 
     }
 
@@ -27,13 +28,21 @@ export class MessagePage extends React.Component {
     document.body.addEventListener("keydown",(e)=>{
         if(e.keyCode == 13){
             //enter key pressed
-            this.sendmessage();
+            if(this.state.type == 'message'){
+                this.sendmessage();
+            }else if(this.state.type == 'group'){
+                this.sendmessagetogroup();
+            }
             document.getElementById('messageinput').value = ''
         }
     })
 
     setInterval(()=>{
-        this.getmessageslength();
+        if(this.state.type == 'message'){
+            this.getmessageslength();
+        }else if(this.state.type == 'group'){
+            this.getgrouplength();
+        }
     }, 1000)
 
   }
@@ -52,14 +61,16 @@ export class MessagePage extends React.Component {
             document.getElementById('usersavatarbar').src=`${data.data[0].avatar}`
             this.getmessage()
             this.addfriendrequest();
+
             let openchats = this.state.profile.openchats.split(';')
-            console.log(openchats)
-            console.log(this.state.openchats)
             for(let i=1;i<openchats.length;i++){
                 document.getElementById('openchatsdiv').innerHTML += `<button class='openchatevent' id="Chatbutton"><img id='openchatavatar'/>${openchats[i]}<button class='closeopenchat'>X</button></button>`
-                console.log('a')
             }
-            console.log(document.getElementsByClassName('openchatevent').length)
+            let groupchats = this.state.profile.groupchats.split(';')
+
+            for(let i=1;i<groupchats.length;i++){
+                document.getElementById('openchatsdiv').innerHTML += `<button class='opengroupchatevent' id="Chatbutton">${groupchats[i]}<button class='closeopengroupchat'>X</button></button>`
+            }
             for(let i=0;i<document.getElementsByClassName('openchatevent').length;i++){
                 fetch(`http://${hostname}:4000/api/profile?name=${openchats[i+1]}`)
                 .then(response => response.json())
@@ -68,6 +79,7 @@ export class MessagePage extends React.Component {
                 })
                 document.getElementsByClassName('openchatevent')[i].addEventListener('click',(e)=>{
                     console.log('a')
+                    this.setState({type : 'message'})
                     this.openchat(openchats[i+1])
                 })
             }
@@ -76,27 +88,149 @@ export class MessagePage extends React.Component {
                     fetch(`http://${hostname}:4000/api/removeopenchat?username=${this.state.profile.username}&friendname=${e.target.parentNode.childNodes[0].childNodes[1].textContent}`)
                     .then(response => response.json())
                     .then((data)=>{
-                        console.log(data)
+                    })
+                })
+            }
+            for(let i=0;i<document.getElementsByClassName('closeopengroupchat').length;i++){
+                document.getElementsByClassName('closeopengroupchat')[i].addEventListener('click',(e)=>{
+                    fetch(`http://${hostname}:4000/api/leavegroupchat?group=${e.target.parentNode.childNodes[0].innerHTML}&name=${this.state.profile.username}`)
+                    .then(response => response.json())
+                    .then((data)=>{
                         this.refreshopenchats();
                     })
                 })
             }
+            for(let i=0;i<document.getElementsByClassName('opengroupchatevent').length;i++){
+                document.getElementsByClassName('opengroupchatevent')[i].addEventListener('click',(e)=>{
+                    this.setState({type : 'group'})
+                    this.groupmessages(groupchats[i+1])
+                })
+            }
+
         })
     }else{
         document.location.href=`http://${hostname}:3000/`
     }
 }
 
+    sendmessagetogroup = () => {
+        let sendto = this.state.currentMessage
+        let message = document.getElementById('messageinput').value;
+        if(sendto !== ''){
+            message = message.
+            replace(/&/g,'%26').
+            replace(/</g,'%3C').
+            replace(/>/g,'%3E').
+            replace(/=/g,"%3D").
+            replace(/'/g,"").
+            replace(/"/g,"").
+            replace(/#/g,"%23").
+            replace(/!/g,"%21").
+            replace(/£/g,"%A3");
+            let words = message.split(" ");
+            words.forEach((word,i) =>{
+              if(word.endsWith('.jpg') || word.endsWith('.png') || word.endsWith('.jpeg') || word.endsWith('.gif')){
+                let url = word;
+                words[i] = `<img src=${url} width=auto height=70>`; 
+              }
+              if(word.indexOf('www.youtube.com/watch') > -1){ 
+                let Link = `http://www.youtube.com/embed/${words[i].slice(words[i].lastIndexOf('%3D')+3, word.length)}`
+                let videoTemplate = `<iframe  width=300 height=70 src=${Link} frameborder=0 allow=accelerometer;autoplay;gyroscope;picture-in-picture allowfullscreen;SameSite=none;></iframe>`
+                words[i] = videoTemplate;
+               
+            }
+            })
+            message = words.join(" ");
+            fetch(`http://${hostname}:4000/api/sendmessagetogroup?group=${sendto}&username=${this.state.profile.username}&message=${message}`)
+            .then(response => response.json())
+            .then((data)=>{
+            })
+        }
+    }
+
+    getgrouplength = () => {
+        fetch(`http://${hostname}:4000/api/getgroupmessages?name=${this.state.currentMessage}`)
+        .then(response => response.json())
+        .then((data)=>{
+            if(data.data != 'false'){
+                if(this.state.messagelength < data.data.messages.message.length){
+                    this.addgroupmessage();
+                    this.setState({messagelength : data.data.messages.message.length})
+                    setTimeout(()=>{
+                        var objDiv = document.getElementById("showmessages");
+                        objDiv.scrollTop = objDiv.scrollHeight;
+                    },300)
+                }
+            }
+        })
+    }
+    addgroupmessage = () => {
+        let sendto = this.state.currentMessage
+        if(sendto !== ""){
+            fetch(`http://${hostname}:4000/api/getgroupmessages?name=${sendto}`)
+            .then(response => response.json())
+            .then((data)=>{
+                if(data.data != 'false'){
+                        let name = data.data.messages.message[data.data.messages.message.length-1].split("℗")[0]
+                        let text = data.data.messages.message[data.data.messages.message.length-1].split("℗")[1]
+                        if(name == 'Server'){
+                            let messageTemplate = `<div id="messagecontainer"><img id="messageavatar"src="https://pbs.twimg.com/profile_images/1520941176/Bruce_FL_2011_small.JPG"/><p class="messageName">${name}</p><p class="messageMessage">${text}</p>`
+                            document.getElementById('showmessages').innerHTML += messageTemplate;
+                        }else{
+                            fetch(`http://${hostname}:4000/api/profile?name=${name}`)
+                            .then(response => response.json())
+                            .then((data)=>{
+                                let messageTemplate = `<div id="messagecontainer"><img id="messageavatar"src="${data.data[0].avatar}"/><p class="messageName">${name}</p><p class="messageMessage">${text}</p>`
+                                document.getElementById('showmessages').innerHTML += messageTemplate;
+                            })
+                        }
+                    }
+            })
+        }
+      }
+
+    groupmessages = (name) => {
+        fetch(`http://${hostname}:4000/api/getgroupmessages?name=${name}`)
+        .then(response => response.json())
+        .then((data)=>{
+            this.setState({currentMessage : name})
+            this.setState({messagelength : data.data.messages.message.length})
+            document.getElementById('showmessages').innerHTML = ''
+            for(let i=0;i<data.data.messages.message.length;i++){
+                let name = data.data.messages.message[i].split("℗")[0]
+                let text = data.data.messages.message[i].split("℗")[1]
+                if(name == 'Server'){
+                    let messageTemplate = `<div id="messagecontainer"><img id="messageavatar"src="https://pbs.twimg.com/profile_images/1520941176/Bruce_FL_2011_small.JPG"/><p class="messageName">${name}: <span id='messageMessage'>${text}</span></p>`
+                    document.getElementById('showmessages').innerHTML += messageTemplate;
+                }else{
+                    fetch(`http://${hostname}:4000/api/profile?name=${name}`)
+                    .then(response => response.json())
+                    .then((data)=>{
+                        let messageTemplate = `<div id="messagecontainer"><img id="messageavatar"src="${data.data[0].avatar}"/><p class="messageName">${name}</p><p class="messageMessage">${text}</p>`
+                        document.getElementById('showmessages').innerHTML += messageTemplate;
+                    })
+                }
+            }
+        })
+    }
+
 
     getopenchats = () => {
+
         let openchats = this.state.profile.openchats.split(';')
         for(let i=1;i<openchats.length;i++){
             if(this.state.openchats[i] !== openchats[i]){
                 document.getElementById('openchatsdiv').innerHTML += `<button class='openchatevent' id='Chatbutton'><img id="openchatavatar"/>${openchats[i]}<button class='closeopenchat'>X</button></button>`
             }
         }
+        let groupchats = this.state.profile.groupchats.split(';')
+
+        for(let i=1;i<groupchats.length;i++){
+            document.getElementById('openchatsdiv').innerHTML += `<button class='opengroupchatevent' id="Chatbutton">${groupchats[i]}<button class='closeopengroupchat'>X</button></button>`
+        }
         for(let i=0;i<document.getElementsByClassName('openchatevent').length;i++){
             document.getElementsByClassName('openchatevent')[i].addEventListener('click',(e)=>{
+                this.setState({type : 'message'})
                 this.openchat(openchats[i+1])
             })
         }
@@ -105,10 +239,14 @@ export class MessagePage extends React.Component {
                 fetch(`http://${hostname}:4000/api/removeopenchat?username=${this.state.profile.username}&friendname=${e.target.parentNode.childNodes[0].childNodes[1].textContent}`)
                 .then(response => response.json())
                 .then((data)=>{
-                    console.log(data)
-                    this.refreshopenchats();                    
-
                 })
+            })
+        }
+        for(let i=0;i<document.getElementsByClassName('opengroupchatevent').length;i++){
+            console.log(document.getElementsByClassName('opengroupchatevent')[i])
+            document.getElementsByClassName('opengroupchatevent')[i].addEventListener('click',(e)=>{
+                this.setState({type : 'group'})
+                this.groupmessages(groupchats[i+1])
             })
         }
     }
@@ -122,12 +260,19 @@ export class MessagePage extends React.Component {
             this.setState({ profile : data.data[0]})
             document.getElementById('usersavatarbar').src=`${data.data[0].avatar}`
             this.getmessage()
+
+
             let openchats = this.state.profile.openchats.split(';')
             console.log(openchats)
             console.log(this.state.openchats)
             for(let i=1;i<openchats.length;i++){
                 document.getElementById('openchatsdiv').innerHTML += `<button class='openchatevent' id="Chatbutton"><img id='openchatavatar'/>${openchats[i]}<button class='closeopenchat'>X</button></button>`
                 console.log('a')
+            }
+            let groupchats = this.state.profile.groupchats.split(';')
+
+            for(let i=1;i<groupchats.length;i++){
+                document.getElementById('openchatsdiv').innerHTML += `<button class='opengroupchatevent' id="Chatbutton">${groupchats[i]}<button class='closeopengroupchat'>X</button></button>`
             }
             console.log(document.getElementsByClassName('openchatevent').length)
             for(let i=0;i<document.getElementsByClassName('openchatevent').length;i++){
@@ -138,6 +283,7 @@ export class MessagePage extends React.Component {
                 })
                 document.getElementsByClassName('openchatevent')[i].addEventListener('click',(e)=>{
                     console.log('a')
+                    this.setState({type : 'message'})
                     this.openchat(openchats[i+1])
                 })
             }
@@ -146,9 +292,14 @@ export class MessagePage extends React.Component {
                     fetch(`http://${hostname}:4000/api/removeopenchat?username=${this.state.profile.username}&friendname=${e.target.parentNode.childNodes[0].childNodes[1].textContent}`)
                     .then(response => response.json())
                     .then((data)=>{
-                        console.log(data)
-                        this.refreshopenchats();
                     })
+                })
+            }
+            for(let i=0;i<document.getElementsByClassName('opengroupchatevent').length;i++){
+                console.log(document.getElementsByClassName('opengroupchatevent')[i])
+                document.getElementsByClassName('opengroupchatevent')[i].addEventListener('click',(e)=>{
+                    this.setState({type : 'group'})
+                    this.groupmessages(groupchats[i+1])
                 })
             }
         })
@@ -254,16 +405,18 @@ export class MessagePage extends React.Component {
 
     makechat = () => {
         if(this.state.group.length > 1){
-            var names = '';             
-            for(let i=0;i<this.state.group.length;i++){
-                names = names + `;${this.state.group[i]}`
+            if(document.getElementById('groupchatnameinput').value.length > 2){
+                var names = '';             
+                for(let i=0;i<this.state.group.length;i++){
+                    names = names + `;${this.state.group[i]}`
+                }
+                names = names + `;${this.state.profile.username}`
+                fetch(`http://${hostname}:4000/api/addgroupchat?users=${names}&username=${this.state.profile.username}&name=${document.getElementById('groupchatnameinput').value}`)
+                .then(response => response.json())
+                .then((data)=>{
+                })
+                document.location.href=`http://${hostname}:3000/messages`
             }
-            names = names + `;${this.state.profile.username}`
-            fetch(`http://${hostname}:4000/api/addgroupchat?users=${names}&username=${this.state.profile.username}&name=test`)
-            .then(response => response.json())
-            .then((data)=>{
-                console.log('a')
-            })
         }
     }
 
@@ -273,7 +426,6 @@ export class MessagePage extends React.Component {
         .then((data)=>{
             var requests = data.data[0].friendrequests.split(';')
             var div = document.getElementById('showfriendrequests')
-            console.log(requests)
             for(let i=1;i<requests.length;i++){
                 div.innerHTML += `<div id="friendreqresultdiv"><img id="friendreqresultavatar"'/><h4 id="friendreqresultname">${requests[i]}</h4> <button class="friendreqbutton" id="friendreqresultaddbutton">Add</button></div>`
             }
@@ -281,8 +433,7 @@ export class MessagePage extends React.Component {
                 fetch(`http://${hostname}:4000/api/profile?name=${requests[i+1]}`)
                 .then(response => response.json())
                 .then((data)=>{
-                    console.log(data)
-                    console.log(document.getElementsByClassName('friendreqbutton')[i].parentNode.childNodes[0].src=`${data.data[0].avatar}`)
+                    document.getElementsByClassName('friendreqbutton')[i].parentNode.childNodes[0].src=`${data.data[0].avatar}`
                 })
             }
             for(let i=0;i<document.getElementsByClassName('friendreqbutton').length;i++){
@@ -565,13 +716,14 @@ export class MessagePage extends React.Component {
 
         </div>
         <div id='groupchatdiv'>
-            <button id='closepopup' onClick={()=>{this.showgcpopup();}}>X</button>
+            <button id='closepopup' onClick={()=>{this.showgcpopup();this.refreshpopup()}}>X</button>
             <div id='showgcfriends'>
 
             </div>
             <div id='showaddedgc'>
 
             </div>
+            <input id='groupchatnameinput'placeholder='Group Chat Name'/>
             <button id='makegroupchat' onClick={()=>{this.makechat()}}>Make Chat</button>
         </div>
 

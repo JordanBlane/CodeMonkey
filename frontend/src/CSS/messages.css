@@ -394,6 +394,20 @@
     background-color:lightgrey;
 }
 
+.closeopengroupchat{
+    position: relative;
+    z-index: 12;
+    border-color:transparent;
+    border-radius: 100px;
+    height:4vh;
+    width:2vw;
+    right:0.5vw;
+    font-size:0.8vw;
+    color:grey;
+    font-weight:900;
+    background-color:lightgrey;
+}
+
 #groupchat{
     position: absolute;
     bottom:0;
@@ -458,3 +472,20 @@
     right:0vw
 }
 
+#groupchatnameinput{
+    position: absolute;
+    width:20vw;
+    height:5vh;
+    left:30vw;
+    top:3vh;
+    border-color:transparent;
+    border-radius: 100px;
+    padding-left: 20px;
+    background-color: #a6dba7;
+    color:white;
+    font-size:1vw;
+    font-weight:900;
+}
+#groupchatnameinput::placeholder{
+    color:white;
+}
