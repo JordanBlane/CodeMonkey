@@ -1,4 +1,3 @@
-# CodeMonkey
 <h2>The Idea</h2>
 <p> 
 My idea with this was to make a place where people can learn to code, it currently supports 3 different languages ( Python, Javascript and c++ ) and i want to add more.
